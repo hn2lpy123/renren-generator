@@ -1,7 +1,6 @@
 package io.renren.controller;
 
 import com.alibaba.fastjson.JSON;
-import io.renren.RenrenApplication;
 import io.renren.entity.GeneratorInfo;
 import io.renren.service.SysGeneratorService;
 import io.renren.utils.GenUtils;

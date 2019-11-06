@@ -2,14 +2,11 @@ package io.renren;
 
 import io.renren.utils.GenUtils;
 import org.mybatis.spring.annotation.MapperScan;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
+
 
 @SpringBootApplication
 @MapperScan("io.renren.dao")
