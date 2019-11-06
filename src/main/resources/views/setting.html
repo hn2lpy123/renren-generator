@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>基础信息设置</title>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="plugins/jqgrid/ui.jqgrid-bootstrap.css">
+<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="css/element-ui.css">
+<script src="libs/jquery.min.js"></script>
+<script src="plugins/layer/layer.js"></script>
+<script src="libs/bootstrap.min.js"></script>
+<script src="libs/vue.min.js"></script>
+<script src="plugins/jqgrid/grid.locale-cn.js"></script>
+<script src="plugins/jqgrid/jquery.jqGrid.min.js"></script>
+<script src="js/common.js"></script>
+	<script src="libs/element-ui.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+<div id="rrapp">
+	<div class="grid-btn" style="text-align: center">
+		<div>
+			<div class="form-group col-sm-2">包名：<input type="text" class="form-control" v-model="q.tableName"   placeholder="包名"></div>
+		</div>
+		<el-row>
+			<el-button>默认按钮</el-button>
+			<el-button type="primary">主要按钮</el-button>
+			<el-button type="success">成功按钮</el-button>
+			<el-button type="info">信息按钮</el-button>
+			<el-button type="warning">警告按钮</el-button>
+			<el-button type="danger">危险按钮</el-button>
+		</el-row>
+	</div>
+</div>
+
+<script src="js/generator.js"></script>
+</body>
+</html>

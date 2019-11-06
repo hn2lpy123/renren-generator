@@ -1,0 +1,32 @@
+# Tomcat
+server:
+    tomcat:
+        max-threads: 10
+        min-spare-threads: 10
+    port: 8088
+
+# mysql
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.jdbc.Driver
+        url: jdbc:mysql://172.16.81.185:43306/eif_member?useUnicode=true&characterEncoding=UTF-8
+        username: root
+        password: 123456
+    jackson:
+        time-zone: GMT+8
+        date-format: yyyy-MM-dd HH:mm:ss
+    resources:
+            static-locations: classpath:/static/,classpath:/views/
+    devtools:
+        restart:
+            enabled: true
+            #添加那个目录的文件需要restart
+            #additional-paths: src/main/java, src/main/resources
+            #排除那个目录的文件不需要restart
+            #exclude: static/**
+
+# Mybatis配置
+mybatis:
+    mapperLocations: classpath:mapper/**/*.xml
+
