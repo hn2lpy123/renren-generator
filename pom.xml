@@ -5,7 +5,7 @@
 	<groupId>io.renren</groupId>
 	<artifactId>renren-generator</artifactId>
 	<version>1.0.0</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<description>renren-generator</description>
 
 	<parent>
@@ -26,6 +26,9 @@
 		<commons.configuration.version>1.10</commons.configuration.version>
 		<fastjson.version>1.2.31</fastjson.version>
 		<velocity.version>1.7</velocity.version>
+		<poi-ooxml.version>3.17</poi-ooxml.version>
+		<poi-ooxml-schemas.version>3.17</poi-ooxml-schemas.version>
+		<json-lib.version>2.4</json-lib.version>
 	</properties>
 
 	<dependencies>
@@ -83,7 +86,35 @@
 			<groupId>org.apache.velocity</groupId>
 			<version>${velocity.version}</version>
 		</dependency>
-	</dependencies>
+
+		<!--基于POI导出Excel-->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi-ooxml.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml-schemas</artifactId>
+			<version>${poi-ooxml-schemas.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.json-lib</groupId>
+			<artifactId>json-lib</artifactId>
+			<version>${json-lib.version}</version>
+			<classifier>jdk15</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.9.4</version>
+		</dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.9</version>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<plugins>
