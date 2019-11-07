@@ -1,12 +1,14 @@
 package io.renren.controller;
 
 import com.alibaba.fastjson.JSON;
+import io.renren.constant.CommonCodeType;
+import io.renren.entity.CommonDto;
 import io.renren.entity.GeneratorInfo;
 import io.renren.service.SysGeneratorService;
-import io.renren.utils.GenUtils;
-import io.renren.utils.PageUtils;
-import io.renren.utils.Query;
-import io.renren.utils.R;
+import io.renren.utils.generator.GenUtils;
+import io.renren.utils.generator.PageUtils;
+import io.renren.utils.generator.Query;
+import io.renren.utils.generator.R;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -72,11 +74,14 @@ public class SysGeneratorController {
 	/**
 	 * 设置生成代码的作者信息和包信息
 	 */
-	@RequestMapping("/updateGeneratorInfo")
-	public void updateGeneratorInfo(@RequestBody GeneratorInfo generatorInfo) {
-		GenUtils.initData.put(GenUtils.PACKAGE, generatorInfo.getPackageInfo());
-		GenUtils.initData.put(GenUtils.AUTHOR, generatorInfo.getAuthor());
-		GenUtils.initData.put(GenUtils.EMAIL, generatorInfo.getEmail());
+	@RequestMapping("/saveGeneratorInfo")
+	@ResponseBody
+	public CommonDto saveGeneratorInfo(@RequestBody GeneratorInfo generatorInfo) {
+		GenUtils.setConfig(GenUtils.PACKAGE, generatorInfo.getPackageInfo());
+		GenUtils.setConfig(GenUtils.AUTHOR, generatorInfo.getAuthor());
+		GenUtils.setConfig(GenUtils.EMAIL, generatorInfo.getEmail());
+		GenUtils.setConfig(GenUtils.TABLEPREFIX, generatorInfo.getTablePrefix());
+		return new CommonDto(CommonCodeType.SUCCESS);
 	}
 
 	/**
@@ -84,8 +89,9 @@ public class SysGeneratorController {
 	 */
 	@RequestMapping("/getGeneratorInfo")
 	@ResponseBody
-	public GeneratorInfo getGeneratorInfo() {
-		return new GeneratorInfo(GenUtils.initData.get(GenUtils.PACKAGE).toString(),
-				GenUtils.initData.get(GenUtils.AUTHOR).toString(), GenUtils.initData.get(GenUtils.EMAIL).toString());
+	public CommonDto<GeneratorInfo> getGeneratorInfo() {
+		return new CommonDto<>(CommonCodeType.SUCCESS, new GeneratorInfo(GenUtils.initData.get(GenUtils.PACKAGE).toString(),
+				GenUtils.initData.get(GenUtils.AUTHOR).toString(), GenUtils.initData.get(GenUtils.EMAIL).toString(),
+				GenUtils.initData.get(GenUtils.TABLEPREFIX).toString()));
 	}
 }

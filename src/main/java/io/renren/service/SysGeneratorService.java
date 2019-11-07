@@ -1,7 +1,7 @@
 package io.renren.service;
 
 import io.renren.dao.SysGeneratorDao;
-import io.renren.utils.GenUtils;
+import io.renren.utils.generator.GenUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,7 @@
 package io.renren.utils;
 
 import com.alibaba.fastjson.JSON;
+import io.renren.utils.generator.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DuplicateKeyException;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class RRExceptionHandler implements HandlerExceptionResolver {
-	private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(RRExceptionHandler.class);
 	
 	@Override
 	public ModelAndView resolveException(HttpServletRequest request,

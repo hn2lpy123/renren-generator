@@ -1,6 +1,6 @@
 package io.renren;
 
-import io.renren.utils.GenUtils;
+import io.renren.utils.generator.GenUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,5 +21,6 @@ public class RenrenApplication {
 		GenUtils.initData.put(GenUtils.PACKAGE, GenUtils.getConfig().getString(GenUtils.PACKAGE));
 		GenUtils.initData.put(GenUtils.AUTHOR, GenUtils.getConfig().getString(GenUtils.AUTHOR));
 		GenUtils.initData.put(GenUtils.EMAIL, GenUtils.getConfig().getString(GenUtils.EMAIL));
+		GenUtils.initData.put(GenUtils.TABLEPREFIX, GenUtils.getConfig().getString(GenUtils.TABLEPREFIX));
 	}
 }

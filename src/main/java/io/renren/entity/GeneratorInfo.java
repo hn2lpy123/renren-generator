@@ -1,6 +1,8 @@
 package io.renren.entity;
 
-public class GeneratorInfo {
+import java.io.Serializable;
+
+public class GeneratorInfo implements Serializable {
 
     private String email;
 
@@ -8,10 +10,24 @@ public class GeneratorInfo {
 
     private String packageInfo;
 
-    public GeneratorInfo(String packageInfo, String author, String email) {
+    private String tablePrefix;
+
+    public GeneratorInfo() {
+    }
+
+    public GeneratorInfo(String packageInfo, String author, String email, String tablePrefix) {
         this.author = author;
         this.email = email;
         this.packageInfo = packageInfo;
+        this.tablePrefix = tablePrefix;
+    }
+
+    public String getTablePrefix() {
+        return tablePrefix;
+    }
+
+    public void setTablePrefix(String tablePrefix) {
+        this.tablePrefix = tablePrefix;
     }
 
     public String getEmail() {

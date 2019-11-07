@@ -1,4 +1,4 @@
-package io.renren.utils;
+package io.renren.utils.generator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
