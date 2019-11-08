@@ -1,7 +1,6 @@
 package io.renren;
 
 import io.renren.utils.generator.GenUtils;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,7 +8,6 @@ import javax.annotation.PostConstruct;
 
 
 @SpringBootApplication
-@MapperScan("io.renren.dao")
 public class RenrenApplication {
 
 	public static void main(String[] args) {

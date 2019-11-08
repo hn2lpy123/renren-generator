@@ -10,14 +10,14 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
-        url: jdbc:mysql://172.16.81.185:43306/eif_member?useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8
         username: root
         password: 123456
     jackson:
         time-zone: GMT+8
         date-format: yyyy-MM-dd HH:mm:ss
     resources:
-            static-locations: classpath:/static/,classpath:/views/
+        static-locations: classpath:/static/,classpath:/views/
     devtools:
         restart:
             enabled: true
