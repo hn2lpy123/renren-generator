@@ -10,9 +10,8 @@ spring:
     datasource:
         type: com.alibaba.druid.pool.DruidDataSource
         driverClassName: com.mysql.jdbc.Driver
-        url: jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8
-        username: root
-        password: 123456
+#        url: jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8
+        url: jdbc:mysql://172.16.81.185:43306/eif_member?useUnicode=true&characterEncoding=utf8&useSSL=false
     jackson:
         time-zone: GMT+8
         date-format: yyyy-MM-dd HH:mm:ss
@@ -25,8 +24,3 @@ spring:
             additional-paths: src/main/resources
             #排除那个目录的文件不需要restart
             #exclude: static/**
-
-# Mybatis配置
-mybatis:
-    mapperLocations: classpath:mapper/**/*.xml
-

@@ -28,18 +28,19 @@ public class DynamicDataSource extends DataSource {
 
         //1、获取数据源
         DataSourceInfo dataSourceInfo = DBIdentifier.getDataSourceInfo();
-        DataSource dds = DDSHolder.instance().getDDS(dataSourceInfo.getDataSourceCode());
+        String dataSourceCode = dataSourceInfo.getDataSourceCode();
+        DataSource dds = DDSHolder.instance().getDDS(dataSourceCode);
 
         //2、如果数据源不存在则创建
         if (dds == null) {
             try {
-                DataSource newDDS = initDDS(dataSourceInfo);
-                DDSHolder.instance().addDDS(dataSourceInfo.getDataSourceCode(), newDDS);
+                dds = initDDS(dataSourceInfo);
+                DDSHolder.instance().addDDS(dataSourceCode, dds);
             } catch (IllegalArgumentException e) {
-                logger.error("Init data source fail. dataSourceCode:" + dataSourceInfo.getDataSourceCode());
+                logger.error("Init data source fail. dataSourceCode:" + dataSourceCode);
                 return null;
             } catch (IllegalAccessException e) {
-                logger.error("Init data source fail. dataSourceCode:" + dataSourceInfo.getDataSourceCode());
+                logger.error("Init data source fail. dataSourceCode:" + dataSourceCode);
                 return null;
             }
         }

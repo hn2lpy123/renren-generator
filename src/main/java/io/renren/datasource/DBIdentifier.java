@@ -1,7 +1,6 @@
 package io.renren.datasource;
 
 import io.renren.entity.DataSourceInfo;
-import org.apache.tomcat.jdbc.pool.DataSource;
 
 /**
  * 数据库标识管理类。用于区分数据源连接的不同数据库。
@@ -14,7 +13,7 @@ public class DBIdentifier {
 	private static ThreadLocal<DataSourceInfo> dataSourceInfoThreadLocal = new ThreadLocal<DataSourceInfo>();
 
 	public static DataSourceInfo getDataSourceInfo() {
-		return dataSourceInfoThreadLocal.get();
+		return dataSourceInfoThreadLocal.get() == null ? new DataSourceInfo() : dataSourceInfoThreadLocal.get();
 	}
 
 	public static void setDataSourceInfo(DataSourceInfo dataSourceInfo) {

@@ -1,6 +1,6 @@
 package io.renren.entity;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 
@@ -18,18 +18,8 @@ public class DataSourceInfo implements Serializable {
 
     private String password;
 
-    private DataSource dataSource;
-
-    public DataSource getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
-
     public String getDataSourceName() {
-        return dataSourceName;
+        return StringUtils.isNotBlank(dataSourceName) ? dataSourceName : "eif-member";
     }
 
     public void setDataSourceName(String dataSourceName) {
@@ -37,7 +27,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getDataSourceCode() {
-        return dataSourceCode;
+        return StringUtils.isNotBlank(dataSourceCode) ? dataSourceCode : "default";
     }
 
     public void setDataSourceCode(String dataSourceCode) {
@@ -45,7 +35,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getDataSourceIp() {
-        return dataSourceIp;
+        return StringUtils.isNotBlank(dataSourceIp) ? dataSourceIp : "172.16.81.185";
     }
 
     public void setDataSourceIp(String dataSourceIp) {
@@ -53,7 +43,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getDataSourcePort() {
-        return dataSourcePort;
+        return StringUtils.isNotBlank(dataSourcePort) ? dataSourcePort : "43306";
     }
 
     public void setDataSourcePort(String dataSourcePort) {
@@ -61,7 +51,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getUsername() {
-        return username;
+        return StringUtils.isNotBlank(username) ? username : "root";
     }
 
     public void setUsername(String username) {
@@ -69,7 +59,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+        return StringUtils.isNotBlank(password) ? password : "123456";
     }
 
     public void setPassword(String password) {
