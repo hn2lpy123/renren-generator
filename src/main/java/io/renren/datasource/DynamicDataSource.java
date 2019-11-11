@@ -1,5 +1,6 @@
 package io.renren.datasource;
 
+import io.renren.entity.DataSourceInfo;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.slf4j.Logger;
@@ -12,12 +13,12 @@ import java.sql.SQLException;
 /**
  * 定义动态数据源派生类。从基础的DataSource派生，动态性自己实现。
  *
- * @author elon
- * @version 2018-02-25
+ * @author lipingyu
+ * @version 2019-11-11
  */
 public class DynamicDataSource extends DataSource {
 
-    private static Logger log = LoggerFactory.getLogger(DynamicDataSource.class);
+    private static Logger logger = LoggerFactory.getLogger(DynamicDataSource.class);
 
     /**
      * 改写本方法是为了在请求不同工程的数据时去连接不同的数据库。
@@ -25,21 +26,20 @@ public class DynamicDataSource extends DataSource {
     @Override
     public Connection getConnection(){
 
-        String projectCode = null;
-
         //1、获取数据源
-        DataSource dds = DDSHolder.instance().getDDS(projectCode);
+        DataSourceInfo dataSourceInfo = DBIdentifier.getDataSourceInfo();
+        DataSource dds = DDSHolder.instance().getDDS(dataSourceInfo.getDataSourceCode());
 
         //2、如果数据源不存在则创建
         if (dds == null) {
             try {
-                DataSource newDDS = initDDS(projectCode);
-                DDSHolder.instance().addDDS(projectCode, newDDS);
+                DataSource newDDS = initDDS(dataSourceInfo);
+                DDSHolder.instance().addDDS(dataSourceInfo.getDataSourceCode(), newDDS);
             } catch (IllegalArgumentException e) {
-                log.error("Init data source fail. projectCode:" + projectCode);
+                logger.error("Init data source fail. dataSourceCode:" + dataSourceInfo.getDataSourceCode());
                 return null;
             } catch (IllegalAccessException e) {
-                log.error("Init data source fail. projectCode:" + projectCode);
+                logger.error("Init data source fail. dataSourceCode:" + dataSourceInfo.getDataSourceCode());
                 return null;
             }
         }
@@ -47,7 +47,7 @@ public class DynamicDataSource extends DataSource {
         try {
             return dds.getConnection();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("getConnection fail.");
             return null;
         }
     }
@@ -59,7 +59,7 @@ public class DynamicDataSource extends DataSource {
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
      */
-    private DataSource initDDS(String projectCode) throws IllegalArgumentException, IllegalAccessException {
+    private DataSource initDDS(DataSourceInfo dataSourceInfo) throws IllegalArgumentException, IllegalAccessException {
 
         DataSource dds = new DataSource();
 
@@ -69,14 +69,12 @@ public class DynamicDataSource extends DataSource {
         for (Field f : pfields) {
             f.setAccessible(true);
             Object value = f.get(this.getPoolProperties());
-            try
-            {
+            try {
                 f.set(property, value);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 //有一些static final的属性不能修改。忽略。
-                log.info("Set value fail. attr name:" + f.getName());
+                logger.info("Set value fail. attr name:" + f.getName());
                 continue;
             }
         }
@@ -84,10 +82,11 @@ public class DynamicDataSource extends DataSource {
 
         // 3、设置数据库名称和IP(一般来说，端口和用户名、密码都是统一固定的)
         String urlFormat = this.getUrl();
-        String url = String.format(urlFormat, ProjectDBMgr.instance().getDBIP(projectCode),
-                ProjectDBMgr.instance().getDBName(projectCode));
+        String url = String.format(urlFormat, dataSourceInfo.getDataSourceIp(),
+                dataSourceInfo.getDataSourcePort(), dataSourceInfo.getDataSourceName());
         dds.setUrl(url);
-
+        dds.setUsername(dataSourceInfo.getUsername());
+        dds.setPassword(dataSourceInfo.getPassword());
         return dds;
     }
 }

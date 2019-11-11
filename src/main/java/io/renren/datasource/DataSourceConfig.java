@@ -13,9 +13,9 @@ import javax.sql.DataSource;
 
 /**
  * 数据源配置管理。
- * 
- * @author elon
- * @version 2018年2月26日
+ *
+ * @author lipingyu
+ * @version 2019-11-11
  */
 @Configuration
 @MapperScan(basePackages="io.renren.dao", value="sqlSessionFactory")

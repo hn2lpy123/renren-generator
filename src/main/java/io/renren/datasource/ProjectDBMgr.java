@@ -15,7 +15,7 @@ public class ProjectDBMgr {
 	 * 新增一个项目或者删除一个项目只需要更新缓存。到时这个类的接口只需要修改为从缓存拿数据。
 	 */
 	private Map<String, String> dbNameMap = new HashMap<String, String>();
-	
+
 	/**
 	 * 保存项目编码与数据库IP的映射关系。
 	 */
@@ -25,7 +25,7 @@ public class ProjectDBMgr {
 		dbNameMap.put("project_001", "db_project_001");
 		dbNameMap.put("project_002", "db_project_002");
 		dbNameMap.put("project_003", "db_project_003");
-		
+
 		dbIPMap.put("project_001", "127.0.0.1");
 		dbIPMap.put("project_002", "127.0.0.1");
 		dbIPMap.put("project_003", "127.0.0.1");

@@ -10,9 +10,9 @@ import java.util.Timer;
 
 /**
  * 动态数据源管理器。
- * 
+ *
  * @author lipingyu
- * @version 2019年11月8日
+ * @version 2019-11-11
  */
 public class DDSHolder {
 	
@@ -26,7 +26,7 @@ public class DDSHolder {
 		
 	}
 	
-	/*
+	/**
 	 * 获取单例对象
 	 */
 	public static DDSHolder instance() {

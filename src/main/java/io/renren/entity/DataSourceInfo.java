@@ -1,5 +1,7 @@
 package io.renren.entity;
 
+import org.apache.tomcat.jdbc.pool.DataSource;
+
 import java.io.Serializable;
 
 public class DataSourceInfo implements Serializable {
@@ -10,9 +12,29 @@ public class DataSourceInfo implements Serializable {
 
     private String dataSourcePort;
 
+    private String dataSourceName;
+
     private String username;
 
     private String password;
+
+    private DataSource dataSource;
+
+    public DataSource getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public String getDataSourceName() {
+        return dataSourceName;
+    }
+
+    public void setDataSourceName(String dataSourceName) {
+        this.dataSourceName = dataSourceName;
+    }
 
     public String getDataSourceCode() {
         return dataSourceCode;

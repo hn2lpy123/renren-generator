@@ -1,6 +1,7 @@
 package io.renren.controller;
 
 import io.renren.constant.CommonCodeType;
+import io.renren.datasource.DBIdentifier;
 import io.renren.entity.CommonDto;
 import io.renren.entity.DataSourceInfo;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +15,7 @@ public class DataSourceController {
 
     @PostMapping("/setDataSource")
     public CommonDto setDataSource(@RequestBody DataSourceInfo dataSourceInfo) {
-
+        DBIdentifier.setDataSourceInfo(dataSourceInfo);
         return new CommonDto(CommonCodeType.SUCCESS);
     }
 }
