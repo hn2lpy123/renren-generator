@@ -1,5 +1,6 @@
-package io.renren.datasource;
+package io.renren.configration;
 
+import io.renren.datasource.DynamicDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;

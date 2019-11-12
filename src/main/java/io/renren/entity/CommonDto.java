@@ -1,7 +1,7 @@
 package io.renren.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.renren.constant.CommonCodeType;
+import io.renren.utils.constant.CommonCodeType;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;

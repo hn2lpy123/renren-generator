@@ -1,7 +1,8 @@
 package io.renren.controller;
 
-import io.renren.constant.CommonCodeType;
+import io.renren.utils.constant.CommonCodeType;
 import io.renren.datasource.DBIdentifier;
+import io.renren.datasource.DDSHolder;
 import io.renren.entity.CommonDto;
 import io.renren.entity.DataSourceInfo;
 import org.slf4j.Logger;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 @RestController
@@ -24,17 +24,25 @@ public class DataSourceController {
 
     @PostMapping("/setDataSource")
     public CommonDto setDataSource(@RequestBody DataSourceInfo dataSourceInfo) {
-        DBIdentifier.setDataSourceInfo(dataSourceInfo);
+        if (!dataSourceInfo.equals(DBIdentifier.getDataSourceInfo())) {
+            DBIdentifier.setDataSourceInfo(dataSourceInfo);
+            DDSHolder.instance().clearDDS();
+        }
         return new CommonDto(CommonCodeType.SUCCESS);
     }
 
     @GetMapping("/getDataSourceInfo")
-    public CommonDto setDataSource() {
-        try {
-            Connection connection = dataSource.getConnection();
-        } catch (SQLException e) {
-
-        }
+    public CommonDto getDataSource() {
         return new CommonDto(CommonCodeType.SUCCESS, DBIdentifier.getDataSourceInfo());
+    }
+
+    @GetMapping("/testDataSource")
+    public CommonDto testDataSource() {
+        try {
+            dataSource.getConnection();
+            return new CommonDto(CommonCodeType.SUCCESS);
+        } catch (SQLException e) {
+            return new CommonDto(CommonCodeType.DATABASE_CONNECT_FAIL);
+        }
     }
 }

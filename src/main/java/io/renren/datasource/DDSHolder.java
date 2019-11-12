@@ -17,9 +17,9 @@ import java.util.Timer;
 public class DDSHolder {
 	
 	/**
-	 * 管理动态数据源列表。<工程编码，数据源>
+	 * 动态数据源
 	 */
-	private Map<String, DataSource> ddsMap = new HashMap<String, DataSource>();
+	private DataSource dataSource;
 
 	
 	private DDSHolder() {
@@ -35,33 +35,38 @@ public class DDSHolder {
 	
 	/**
 	 * 添加动态数据源。
-	 * 
-	 * @param projectCode 项目编码 
+	 *
 	 * @param dds dds
 	 */
-	public synchronized void addDDS(String projectCode, DataSource dds) {
-		ddsMap.put(projectCode, dds);
+	public synchronized void setDDS(DataSource dds) {
+		if (dataSource != null) {
+			dataSource.close();
+		}
+		this.dataSource = dds;
+	}
+
+	/**
+	 * 清理动态数据源。
+	 */
+	public synchronized void clearDDS() {
+		if (dataSource != null) {
+			dataSource.close();
+		}
 	}
 	
 	/**
 	 * 查询动态数据源
-	 * 
-	 * @param projectCode 项目编码
+	 *
 	 * @return dds
 	 */
-	public synchronized DataSource getDDS(String projectCode) {
-		
-		if (ddsMap.containsKey(projectCode)) {
-			return ddsMap.get(projectCode);
-		}
-		
-		return null;
+	public synchronized DataSource getDDS() {
+		return dataSource;
 	}
-	
+
 	/**
 	 * 单例构件类
 	 * @author lipingyu
-	 * @version 2018年2月26日
+	 * @version 2019年11月11日
 	 */
 	private static class DDSHolderBuilder {
 		private static DDSHolder instance = new DDSHolder();

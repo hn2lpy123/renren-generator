@@ -3,7 +3,7 @@ package io.renren.datasource;
 import io.renren.entity.DataSourceInfo;
 
 /**
- * 数据库标识管理类。用于区分数据源连接的不同数据库。
+ * 数据库信息管理类。
  * 
  * @author lipingyu
  * @version 2019-11-11

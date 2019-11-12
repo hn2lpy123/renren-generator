@@ -27,26 +27,21 @@ public class DynamicDataSource extends DataSource {
     public Connection getConnection(){
 
         //1、获取数据源
-        DataSourceInfo dataSourceInfo = DBIdentifier.getDataSourceInfo();
-        String dataSourceCode = dataSourceInfo.getDataSourceCode();
-        DataSource dds = DDSHolder.instance().getDDS(dataSourceCode);
+        DataSource dds = DDSHolder.instance().getDDS();
 
         //2、如果数据源不存在则创建
-        if (dds == null) {
-            try {
-                dds = initDDS(dataSourceInfo);
-                DDSHolder.instance().addDDS(dataSourceCode, dds);
-            } catch (IllegalArgumentException e) {
-                logger.error("Init data source fail. dataSourceCode:" + dataSourceCode);
-                return null;
-            } catch (IllegalAccessException e) {
-                logger.error("Init data source fail. dataSourceCode:" + dataSourceCode);
-                return null;
-            }
-        }
-
         try {
+            if (dds == null) {
+                dds = initDDS(DBIdentifier.getDataSourceInfo());
+                DDSHolder.instance().setDDS(dds);
+            }
             return dds.getConnection();
+        } catch (IllegalArgumentException e) {
+            logger.error("Init data source fail.", e);
+            return null;
+        } catch (IllegalAccessException e) {
+            logger.error("Init data source fail.", e);
+            return null;
         } catch (SQLException e) {
             logger.error("getConnection fail.");
             return null;
@@ -72,8 +67,7 @@ public class DynamicDataSource extends DataSource {
             Object value = f.get(this.getPoolProperties());
             try {
                 f.set(property, value);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 //有一些static final的属性不能修改。忽略。
                 logger.info("Set value fail. attr name:" + f.getName());
                 continue;
@@ -86,6 +80,7 @@ public class DynamicDataSource extends DataSource {
         String url = String.format(urlFormat, dataSourceInfo.getDataSourceIp(),
                 dataSourceInfo.getDataSourcePort(), dataSourceInfo.getDataSourceName());
         dds.setUrl(url);
+        dds.setDriverClassName(dataSourceInfo.getDriverClassName());
         dds.setUsername(dataSourceInfo.getUsername());
         dds.setPassword(dataSourceInfo.getPassword());
         return dds;

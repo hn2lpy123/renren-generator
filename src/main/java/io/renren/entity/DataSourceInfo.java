@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class DataSourceInfo implements Serializable {
 
-    private String dataSourceCode;
+    private String driverClassName;
 
     private String dataSourceIp;
 
@@ -18,20 +18,35 @@ public class DataSourceInfo implements Serializable {
 
     private String password;
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof  DataSourceInfo) {
+            DataSourceInfo compareObj = (DataSourceInfo)obj;
+            if (compareObj.getDriverClassName().equals(driverClassName) &&
+                    compareObj.getDataSourceIp().equals(dataSourceIp) &&
+                    compareObj.getDataSourcePort().equals(dataSourcePort) &&
+                    compareObj.getDataSourceName().equals(dataSourceName) &&
+                    compareObj.getUsername().equals(username) && compareObj.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public String getDriverClassName() {
+        return driverClassName;
+    }
+
+    public void setDriverClassName(String driverClassName) {
+        this.driverClassName = driverClassName;
+    }
+
     public String getDataSourceName() {
-        return StringUtils.isNotBlank(dataSourceName) ? dataSourceName : "eif-member";
+        return StringUtils.isNotBlank(dataSourceName) ? dataSourceName : "eif_member";
     }
 
     public void setDataSourceName(String dataSourceName) {
         this.dataSourceName = dataSourceName;
-    }
-
-    public String getDataSourceCode() {
-        return StringUtils.isNotBlank(dataSourceCode) ? dataSourceCode : "default";
-    }
-
-    public void setDataSourceCode(String dataSourceCode) {
-        this.dataSourceCode = dataSourceCode;
     }
 
     public String getDataSourceIp() {

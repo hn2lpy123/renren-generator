@@ -1,6 +1,6 @@
 package io.renren.monitor;
 
-import io.renren.constant.CommonCodeType;
+import io.renren.utils.constant.CommonCodeType;
 
 import java.io.Serializable;
 

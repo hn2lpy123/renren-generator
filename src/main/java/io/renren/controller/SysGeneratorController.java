@@ -1,10 +1,11 @@
 package io.renren.controller;
 
 import com.alibaba.fastjson.JSON;
-import io.renren.constant.CommonCodeType;
 import io.renren.entity.CommonDto;
 import io.renren.entity.GeneratorInfo;
 import io.renren.service.SysGeneratorService;
+import io.renren.utils.annotation.NoRepeatSubmit;
+import io.renren.utils.constant.CommonCodeType;
 import io.renren.utils.generator.GenUtils;
 import io.renren.utils.generator.PageUtils;
 import io.renren.utils.generator.Query;
@@ -40,6 +41,7 @@ public class SysGeneratorController {
 	 * 列表
 	 */
 	@ResponseBody
+	@NoRepeatSubmit
 	@RequestMapping("/list")
 	public R list(@RequestParam Map<String, Object> params){
 		//查询列表数据

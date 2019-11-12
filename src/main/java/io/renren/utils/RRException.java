@@ -1,5 +1,7 @@
 package io.renren.utils;
 
+import io.renren.utils.constant.CommonCodeType;
+
 /**
  * 自定义异常
  * 
@@ -33,6 +35,18 @@ public class RRException extends RuntimeException {
 		super(msg, e);
 		this.msg = msg;
 		this.code = code;
+	}
+
+	public RRException(CommonCodeType commonCodeType) {
+		super(commonCodeType.getValue());
+		this.msg = commonCodeType.getValue();
+		this.code = commonCodeType.getCode();
+	}
+
+	public RRException(CommonCodeType commonCodeType, Throwable e) {
+		super(commonCodeType.getValue(), e);
+		this.msg = commonCodeType.getValue();
+		this.code = commonCodeType.getCode();
 	}
 
 	public String getMsg() {

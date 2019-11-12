@@ -29,9 +29,15 @@
 		<poi-ooxml.version>3.17</poi-ooxml.version>
 		<poi-ooxml-schemas.version>3.17</poi-ooxml-schemas.version>
 		<json-lib.version>2.4</json-lib.version>
+		<guava.version>24.0-jre</guava.version>
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
