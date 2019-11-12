@@ -8,9 +8,14 @@ server:
 # mysql
 spring:
     datasource:
-        type: io.renren.datasource.DynamicDataSource
-        driverClassName: com.mysql.jdbc.Driver
         url: jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+        default:
+            driverClassName: com.mysql.jdbc.Driver
+            dataSourceIp: 127.0.0.1
+            dataSourcePort: 3306
+            dataSourceName: mysql
+            username: root
+            password: 123456
     jackson:
         time-zone: GMT+8
         date-format: yyyy-MM-dd HH:mm:ss

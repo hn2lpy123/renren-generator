@@ -1,6 +1,7 @@
 package io.renren.datasource;
 
 import io.renren.entity.DataSourceInfo;
+import org.springframework.stereotype.Component;
 
 /**
  * 数据库信息管理类。
@@ -8,12 +9,13 @@ import io.renren.entity.DataSourceInfo;
  * @author lipingyu
  * @version 2019-11-11
  */
+@Component
 public class DBIdentifier {
 
 	private static ThreadLocal<DataSourceInfo> dataSourceInfoThreadLocal = new ThreadLocal<DataSourceInfo>();
 
 	public static DataSourceInfo getDataSourceInfo() {
-		return dataSourceInfoThreadLocal.get() == null ? new DataSourceInfo() : dataSourceInfoThreadLocal.get();
+		return dataSourceInfoThreadLocal.get();
 	}
 
 	public static void setDataSourceInfo(DataSourceInfo dataSourceInfo) {

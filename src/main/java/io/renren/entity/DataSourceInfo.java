@@ -42,7 +42,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getDataSourceName() {
-        return StringUtils.isNotBlank(dataSourceName) ? dataSourceName : "eif_member";
+        return dataSourceName;
     }
 
     public void setDataSourceName(String dataSourceName) {
@@ -50,7 +50,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getDataSourceIp() {
-        return StringUtils.isNotBlank(dataSourceIp) ? dataSourceIp : "172.16.81.185";
+        return dataSourceIp;
     }
 
     public void setDataSourceIp(String dataSourceIp) {
@@ -58,7 +58,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getDataSourcePort() {
-        return StringUtils.isNotBlank(dataSourcePort) ? dataSourcePort : "43306";
+        return dataSourcePort;
     }
 
     public void setDataSourcePort(String dataSourcePort) {
@@ -66,7 +66,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getUsername() {
-        return StringUtils.isNotBlank(username) ? username : "root";
+        return username;
     }
 
     public void setUsername(String username) {
@@ -74,7 +74,7 @@ public class DataSourceInfo implements Serializable {
     }
 
     public String getPassword() {
-        return StringUtils.isNotBlank(password) ? password : "123456";
+        return password;
     }
 
     public void setPassword(String password) {
