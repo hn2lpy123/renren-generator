@@ -6,6 +6,7 @@ import io.renren.entity.DataSourceInfo;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @author www.gaozz.club
  * @date 2018-08-26
  */
+@PropertySource(value = { "dataSource.properties" })
 public class SystemConfiguration {
 
     @Bean

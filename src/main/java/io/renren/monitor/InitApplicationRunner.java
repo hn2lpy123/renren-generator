@@ -26,7 +26,7 @@ public class InitApplicationRunner implements ApplicationRunner {
     private static final Logger logger = LoggerFactory.getLogger(InitApplicationRunner.class);
 
     @Override
-    public void run(ApplicationArguments applicationArguments) throws Exception {
+    public void run(ApplicationArguments applicationArguments) {
         logger.info("==========start init application==========");
         DBIdentifier.setDataSourceInfo(defaultDataSourceInfo);
         GenUtils.initData.put(GenUtils.PACKAGE, GenUtils.getConfig().getString(GenUtils.PACKAGE));

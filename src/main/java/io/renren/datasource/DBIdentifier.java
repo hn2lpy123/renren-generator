@@ -12,13 +12,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DBIdentifier {
 
-	private static ThreadLocal<DataSourceInfo> dataSourceInfoThreadLocal = new ThreadLocal<DataSourceInfo>();
+	private static DataSourceInfo dataSourceInfo;
 
 	public static DataSourceInfo getDataSourceInfo() {
-		return dataSourceInfoThreadLocal.get();
+		return dataSourceInfo;
 	}
 
 	public static void setDataSourceInfo(DataSourceInfo dataSourceInfo) {
-		dataSourceInfoThreadLocal.set(dataSourceInfo);
+		DBIdentifier.dataSourceInfo = dataSourceInfo;
 	}
 }

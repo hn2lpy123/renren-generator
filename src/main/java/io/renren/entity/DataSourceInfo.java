@@ -1,10 +1,10 @@
 package io.renren.entity;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.io.Serializable;
 
 public class DataSourceInfo implements Serializable {
+
+    private String dataSourceType;
 
     private String driverClassName;
 
@@ -31,6 +31,24 @@ public class DataSourceInfo implements Serializable {
             }
         }
         return false;
+    }
+
+    public String getUrl() {
+        String url = "";
+        if (dataSourceType.equalsIgnoreCase("mysql")) {
+            url = "jdbc:mysql://%s:%s/%s?useUnicode=true&characterEncoding=UTF-8&useSSL=false";
+        } else if (dataSourceType.equalsIgnoreCase("oracle")) {
+            url = "jdbc:oracle:thin:@%s:%s:%s";
+        }
+        return String.format(url, dataSourceIp, dataSourcePort, dataSourceName);
+    }
+
+    public String getDataSourceType() {
+        return dataSourceType;
+    }
+
+    public void setDataSourceType(String dataSourceType) {
+        this.dataSourceType = dataSourceType;
     }
 
     public String getDriverClassName() {

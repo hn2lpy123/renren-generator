@@ -75,11 +75,10 @@ public class DynamicDataSource extends DataSource {
         }
         dds.setPoolProperties(property);
 
-        // 3、设置数据库名称和IP(一般来说，端口和用户名、密码都是统一固定的)
-        String urlFormat = this.getUrl();
-        String url = String.format(urlFormat, dataSourceInfo.getDataSourceIp(),
-                dataSourceInfo.getDataSourcePort(), dataSourceInfo.getDataSourceName());
-        dds.setUrl(url);
+//        String urlFormat = this.getUrl();
+//        String url = String.format(urlFormat, dataSourceInfo.getDataSourceIp(),
+//                dataSourceInfo.getDataSourcePort(), dataSourceInfo.getDataSourceName());
+        dds.setUrl(dataSourceInfo.getUrl());
         dds.setDriverClassName(dataSourceInfo.getDriverClassName());
         dds.setUsername(dataSourceInfo.getUsername());
         dds.setPassword(dataSourceInfo.getPassword());
