@@ -1,6 +1,7 @@
 package io.renren.utils;
 
 import com.alibaba.fastjson.JSON;
+import io.renren.utils.Exception.RRException;
 import io.renren.utils.generator.R;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

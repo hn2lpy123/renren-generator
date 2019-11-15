@@ -24,19 +24,36 @@ public class PropProjectDataListener extends AnalysisEventListener<Map<Integer, 
     /**
      * 每隔1000条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
      */
-    private static final String SQL_FORMART = "INSERT INTO t_market_integrating_mkt_unit(integrating_mkt_company_id, unit_name, is_prop_company, property_company_id)\n" +
-            "SELECT id integrating_mkt_company_id, %S unit_name, b'0' is_prop_company, '-1' property_company_id FROM\n" +
-            "t_market_integrating_mkt_company WHERE company_name=%S AND `status`=1;\n";
+    private static final String UNIT_SQL_FORMART = "INSERT INTO t_market_integrating_mkt_unit(integrating_mkt_company_id, unit_name, is_prop_company, property_company_id)\n" +
+            "SELECT id integrating_mkt_company_id, %s unit_name, b%s is_prop_company, %s FROM\n" +
+            "t_market_integrating_mkt_company WHERE company_name=%s AND `status`=1;\n";
+
+    public static final String PROJECT_SQL_FORMAT = "INSERT INTO t_market_property_project(property_company_id, property_project_name)\n" +
+            "SELECT id property_company_id, %s property_project_name FROM t_market_integrating_mkt_company\n" +
+            "WHERE company_name=%s AND `status`=1;\n";
 
     public static final String PARAM_FORMAT = "'%s'";
 
-    private List<String> datas = new ArrayList<String>();
+    private List<String> units = new ArrayList<String>();
+
+    private List<String> projects = new ArrayList<String>();
 
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
         LOGGER.info("解析到一条数据:{}", JSON.toJSONString(data));
-        String sql = String.format(SQL_FORMART, String.format(PARAM_FORMAT, data.get(1)), String.format(PARAM_FORMAT, data.get(0)));
-        datas.add(sql);
+        String tmp = data.get(2);
+        String unitSql;
+        String projectSql;
+        if ("是".equals(tmp)) {
+            unitSql = String.format(UNIT_SQL_FORMART, String.format(PARAM_FORMAT, data.get(1)), String.format(PARAM_FORMAT, "1"),
+                    "id property_company_id", String.format(PARAM_FORMAT, data.get(0)));
+            projectSql = String.format(PROJECT_SQL_FORMAT, String.format(PARAM_FORMAT, data.get(3)), String.format(PARAM_FORMAT, data.get(0)));
+            projects.add(projectSql);
+        } else {
+            unitSql = String.format(UNIT_SQL_FORMART, String.format(PARAM_FORMAT, data.get(1)), String.format(PARAM_FORMAT, "0"),
+                    String.format(PARAM_FORMAT, "-1") + " property_company_id", String.format(PARAM_FORMAT, data.get(0)));
+        }
+        units.add(unitSql);
     }
 
     @Override
@@ -47,21 +64,30 @@ public class PropProjectDataListener extends AnalysisEventListener<Map<Integer, 
             e.printStackTrace();
         }
         LOGGER.info("所有数据解析完成！");
-        datas.clear();
+        units.clear();
     }
 
     private void saveData(String sheetName) throws IOException {
         File file = new File("D:\\" + sheetName + "下属单位.sql");
         FileUtils.writeByteArrayToFile(file, "".getBytes("UTF-8"),false);
-        for (String sql : datas) {
+        for (String sql : units) {
             byte[] sourceBytes = sql.getBytes("UTF-8");
             if(null != sourceBytes){
                 FileUtils.writeByteArrayToFile(file, sourceBytes,true);
             }
         }
+
+        File file2 = new File("D:\\" + sheetName + "楼盘.sql");
+        FileUtils.writeByteArrayToFile(file2, "".getBytes("UTF-8"),false);
+        for (String sql : projects) {
+            byte[] sourceBytes = sql.getBytes("UTF-8");
+            if(null != sourceBytes){
+                FileUtils.writeByteArrayToFile(file2, sourceBytes,true);
+            }
+        }
     }
 
-    public List<String> getDatas() {
-        return datas;
+    public List<String> getUnits() {
+        return units;
     }
 }

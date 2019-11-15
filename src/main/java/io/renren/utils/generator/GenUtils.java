@@ -3,7 +3,7 @@ package io.renren.utils.generator;
 import io.renren.entity.ColumnEntity;
 import io.renren.entity.TableEntity;
 import io.renren.utils.IOUtil;
-import io.renren.utils.RRException;
+import io.renren.utils.Exception.RRException;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
