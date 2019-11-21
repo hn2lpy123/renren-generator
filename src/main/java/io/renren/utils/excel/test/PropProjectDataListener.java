@@ -4,6 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
 import io.renren.utils.excel.Listener.NoModleDataListener;
+import io.renren.utils.excel.bean.CompanyInfo;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +42,7 @@ public class PropProjectDataListener extends AnalysisEventListener<Map<Integer, 
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
         LOGGER.info("解析到一条数据:{}", JSON.toJSONString(data));
+        ExcelTest.companyInfoSet.add(new CompanyInfo(String.format(PARAM_FORMAT, data.get(0)), String.format(PARAM_FORMAT, data.get(4))));
         String tmp = data.get(2);
         String unitSql;
         String projectSql;
@@ -59,7 +61,7 @@ public class PropProjectDataListener extends AnalysisEventListener<Map<Integer, 
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
         try {
-            saveData(context.getCurrentSheet().getSheetName());
+            saveData();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,8 +69,8 @@ public class PropProjectDataListener extends AnalysisEventListener<Map<Integer, 
         units.clear();
     }
 
-    private void saveData(String sheetName) throws IOException {
-        File file = new File("D:\\" + sheetName + "下属单位.sql");
+    private void saveData() throws IOException {
+        File file = new File("D:\\step3 物业公司下属单位.sql");
         FileUtils.writeByteArrayToFile(file, "".getBytes("UTF-8"),false);
         for (String sql : units) {
             byte[] sourceBytes = sql.getBytes("UTF-8");
@@ -77,7 +79,7 @@ public class PropProjectDataListener extends AnalysisEventListener<Map<Integer, 
             }
         }
 
-        File file2 = new File("D:\\" + sheetName + "楼盘.sql");
+        File file2 = new File("D:\\step4 物业公司楼盘.sql");
         FileUtils.writeByteArrayToFile(file2, "".getBytes("UTF-8"),false);
         for (String sql : projects) {
             byte[] sourceBytes = sql.getBytes("UTF-8");

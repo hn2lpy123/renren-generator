@@ -4,6 +4,7 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
 import io.renren.utils.excel.Listener.NoModleDataListener;
+import io.renren.utils.excel.bean.CompanyInfo;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,7 @@ public class NotPropProjectDataListener extends AnalysisEventListener<Map<Intege
     @Override
     public void invoke(Map<Integer, String> data, AnalysisContext context) {
         LOGGER.info("解析到一条数据:{}", JSON.toJSONString(data));
+        ExcelTest.companyInfoSet.add(new CompanyInfo(String.format(PARAM_FORMAT, data.get(0)), String.format(PARAM_FORMAT, data.get(2))));
         String sql = String.format(SQL_FORMART, String.format(PARAM_FORMAT, data.get(1)), String.format(PARAM_FORMAT, data.get(0)));
         datas.add(sql);
     }
@@ -51,7 +53,12 @@ public class NotPropProjectDataListener extends AnalysisEventListener<Map<Intege
     }
 
     private void saveData(String sheetName) throws IOException {
-        File file = new File("D:\\" + sheetName + "下属单位.sql");
+        File file = null;
+        if (sheetName.equals("地产公司")) {
+            file = new File("D:\\step2 地产公司下属单位.sql");
+        } else {
+            file = new File("D:\\step5 其他产业集团下属单位.sql");
+        }
         FileUtils.writeByteArrayToFile(file, "".getBytes("UTF-8"),false);
         for (String sql : datas) {
             byte[] sourceBytes = sql.getBytes("UTF-8");
