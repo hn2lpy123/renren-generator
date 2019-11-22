@@ -4,16 +4,13 @@ import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
 import io.renren.utils.excel.Listener.NoModleDataListener;
-import io.renren.utils.excel.bean.CompanyInfo;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 直接用map接收数据
@@ -35,7 +32,7 @@ public class PropProjectDataListener extends AnalysisEventListener<Map<Integer, 
 
     public static final String PARAM_FORMAT = "'%s'";
 
-    private List<String> units = new ArrayList<String>();
+    private Set<String> units = new HashSet<>();
 
     private List<String> projects = new ArrayList<String>();
 
@@ -89,7 +86,7 @@ public class PropProjectDataListener extends AnalysisEventListener<Map<Integer, 
         }
     }
 
-    public List<String> getUnits() {
+    public Set<String> getUnits() {
         return units;
     }
 }

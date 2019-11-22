@@ -55,7 +55,7 @@ public class DynamicDataSource extends DataSource {
      * @throws IllegalAccessException
      * @throws IllegalArgumentException
      */
-    private DataSource initDDS(DataSourceInfo dataSourceInfo) throws IllegalArgumentException, IllegalAccessException {
+    public DataSource initDDS(DataSourceInfo dataSourceInfo) throws IllegalArgumentException, IllegalAccessException {
 
         DataSource dds = new DataSource();
 
@@ -75,9 +75,6 @@ public class DynamicDataSource extends DataSource {
         }
         dds.setPoolProperties(property);
 
-//        String urlFormat = this.getUrl();
-//        String url = String.format(urlFormat, dataSourceInfo.getDataSourceIp(),
-//                dataSourceInfo.getDataSourcePort(), dataSourceInfo.getDataSourceName());
         dds.setUrl(dataSourceInfo.getUrl());
         dds.setDriverClassName(dataSourceInfo.getDriverClassName());
         dds.setUsername(dataSourceInfo.getUsername());

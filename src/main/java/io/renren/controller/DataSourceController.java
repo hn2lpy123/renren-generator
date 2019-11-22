@@ -1,16 +1,18 @@
 package io.renren.controller;
 
-import io.renren.utils.constant.CommonCodeType;
 import io.renren.datasource.DBIdentifier;
 import io.renren.datasource.DDSHolder;
 import io.renren.entity.CommonDto;
 import io.renren.entity.DataSourceInfo;
+import io.renren.utils.constant.CommonCodeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @RestController
@@ -23,10 +25,14 @@ public class DataSourceController {
     private DataSource dataSource;
 
     @PostMapping("/setDataSource")
-    public CommonDto setDataSource(@RequestBody DataSourceInfo dataSourceInfo) {
+    public CommonDto setDataSource(@RequestBody DataSourceInfo dataSourceInfo) throws SQLException {
+        if (!validDataSourceInfo(dataSourceInfo)) {
+            return new CommonDto(CommonCodeType.DATABASE_CONNECT_FAIL);
+        }
         if (!dataSourceInfo.equals(DBIdentifier.getDataSourceInfo())) {
             DBIdentifier.setDataSourceInfo(dataSourceInfo);
             DDSHolder.instance().clearDDS();
+            dataSource.getConnection();
         }
         return new CommonDto(CommonCodeType.SUCCESS);
     }
@@ -36,13 +42,31 @@ public class DataSourceController {
         return new CommonDto(CommonCodeType.SUCCESS, DBIdentifier.getDataSourceInfo());
     }
 
-    @GetMapping("/testDataSource")
-    public CommonDto testDataSource() {
-        try {
-            dataSource.getConnection();
+    @PostMapping("/testDataSource")
+    public CommonDto testDataSource(@RequestBody DataSourceInfo dataSourceInfo) {
+        if (validDataSourceInfo(dataSourceInfo)) {
             return new CommonDto(CommonCodeType.SUCCESS);
-        } catch (SQLException e) {
-            return new CommonDto(CommonCodeType.DATABASE_CONNECT_FAIL);
+        }
+        return new CommonDto(CommonCodeType.DATABASE_CONNECT_FAIL);
+    }
+
+    private boolean validDataSourceInfo(DataSourceInfo dataSourceInfo) {
+        Connection connection = null;
+        try {
+            Class.forName(dataSourceInfo.getDriverClassName());
+            connection = DriverManager.getConnection(dataSourceInfo.getUrl()
+                    ,dataSourceInfo.getUsername(), dataSourceInfo.getPassword());
+            return true;
+        } catch (SQLException | ClassNotFoundException e) {
+            return false;
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    logger.error("数据库测试Connection关闭失败");
+                }
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-package io.renren.utils.excel.bean;
+package io.renren.utils.excel.test;
 
 import io.renren.utils.StringUtils;
 

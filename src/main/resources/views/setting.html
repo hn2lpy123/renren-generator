@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+-<!DOCTYPE html>
 <html>
 <head>
 	<title>基础信息设置</title>
@@ -84,44 +84,70 @@
 		</div>
 	</div>
 
-<!--	<div class="card card-warning">-->
-<!--		<div class="card-header">-->
-<!--			<h3 class="card-title">数据源信息配置&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-info btn-sm" onclick="edit(2)">编辑</button></h3>-->
-<!--		</div>-->
-<!--		&lt;!&ndash; /.card-header &ndash;&gt;-->
-<!--		<div class="card-body">-->
-<!--				<div class="row">-->
-<!--					<div class="col-sm-6">-->
-<!--						&lt;!&ndash; text input &ndash;&gt;-->
-<!--						<div class="form-group">-->
-<!--							<label>包名</label>-->
-<!--							<input type="text" class="form-control" placeholder="Enter ..." readonly>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					<div class="col-sm-6">-->
-<!--						<div class="form-group">-->
-<!--							<label>作者</label>-->
-<!--							<input type="text" class="form-control" placeholder="Enter ..." readonly>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--				<div class="row">-->
-<!--					<div class="col-sm-6">-->
-<!--						&lt;!&ndash; text input &ndash;&gt;-->
-<!--						<div class="form-group">-->
-<!--							<label>Email</label>-->
-<!--							<input type="text" class="form-control" placeholder="Enter ..." readonly>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					<div class="col-sm-6">-->
-<!--						<div class="form-group">-->
-<!--							<label>表前缀</label>-->
-<!--							<input type="text" class="form-control" placeholder="Enter ..." readonly>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--		</div>-->
-<!--	</div>-->
+	<div class="card card-warning">
+		<div class="card-header">
+			<h3 class="card-title">数据源信息配置
+				&nbsp;&nbsp;&nbsp;&nbsp;<button id="edit2" type="button" class="btn btn-info btn-sm" onclick="edit(2)">编辑</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button id="testConn" type="button" class="btn btn-primary btn-sm" onclick="test()">连接测试</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button id="save2" type="button" class="btn btn-success btn-sm" onclick="save(2)">保存</button></h3>
+		</div>
+		<!-- /.card-header -->
+		<div class="card-body">
+				<div class="row">
+					<div class="col-sm-6">
+						<!-- text input -->
+						<div class="form-group">
+							<label>DataSourceType</label>
+							<input id="dataSourceType" type="text" class="form-control" placeholder="Enter ..." readonly>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>DriverClassName</label>
+							<input id="driverClassName" type="text" class="form-control" placeholder="Enter ..." readonly>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<!-- text input -->
+						<div class="form-group">
+							<label>Ip</label>
+							<input id="dataSourceIp" type="text" class="form-control" placeholder="Enter ..." readonly>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Port</label>
+							<input id="dataSourcePort" type="text" class="form-control" placeholder="Enter ..." readonly>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>UserName</label>
+							<input id="username" type="text" class="form-control" placeholder="Enter ..." readonly>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Password</label>
+							<input id="password" type="text" class="form-control" placeholder="Enter ..." readonly>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-6">
+						<!-- text input -->
+						<div class="form-group">
+							<label>DataSourceName</label>
+							<input id="dataSourceName" type="text" class="form-control" placeholder="Enter ..." readonly>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
 </form>
 </div>
 
@@ -129,6 +155,7 @@
 	$._messengerDefaults = { extraClasses: 'messenger-fixed messenger-theme-future messenger-on-top messenger-on-right' }
 	$(document).ready(function(){
 		$("#save1").hide();
+		$("#save2").hide();
 		$.get("/sys/generator/getGeneratorInfo",function (data, status) {
 			var tmp = data.data;
 			if (status == "success") {
@@ -139,6 +166,25 @@
 			} else {
 				$.globalMessenger().post({
 					message: "查询基础信息失败",
+					type: 'error',//消息类型。error、info、success
+					showCloseButton: false,//是否显示关闭按钮
+					hideOnNavigate: true
+				});
+			}
+		});
+		$.get("/sys/dataSource/getDataSourceInfo",function (data, status) {
+			var tmp = data.data;
+			if (status == "success") {
+				$("#dataSourceType").val(tmp.dataSourceType);
+				$("#driverClassName").val(tmp.driverClassName);
+				$("#dataSourceIp").val(tmp.dataSourceIp);
+				$("#dataSourcePort").val(tmp.dataSourcePort);
+				$("#dataSourceName").val(tmp.dataSourceName);
+				$("#username").val(tmp.username);
+				$("#password").val(tmp.password);
+			} else {
+				$.globalMessenger().post({
+					message: "查询数据源信息失败",
 					type: 'error',//消息类型。error、info、success
 					showCloseButton: false,//是否显示关闭按钮
 					hideOnNavigate: true
@@ -162,8 +208,56 @@
 			$("#save1").show();
 			$("#edit1").attr("disabled", "disabled");
 		} else if (type = 2) {
-
+			$("#dataSourceType").removeAttr("readonly");
+			$("#driverClassName").removeAttr("readonly");
+			$("#dataSourceIp").removeAttr("readonly");
+			$("#dataSourcePort").removeAttr("readonly");
+			$("#dataSourceName").removeAttr("readonly");
+			$("#username").removeAttr("readonly");
+			$("#password").removeAttr("readonly");
+			$("#save2").show();
+			$("#edit2").attr("disabled", "disabled");
 		}
+	};
+	function save2() {
+		$.ajax({
+			type: "post",
+			url: "/sys/dataSource/setDataSource",
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify({
+				"dataSourceType": $("#dataSourceType").val(),
+				"driverClassName": $("#driverClassName").val(),
+				"dataSourceIp": $("#dataSourceIp").val(),
+				"dataSourcePort": $("#dataSourcePort").val(),
+				"dataSourceName": $("#dataSourceName").val(),
+				"username": $("#username").val(),
+				"password": $("#password").val()
+			}),
+			dataType: "json",
+			success: function (data) {
+				$("#dataSourceType").attr("readonly", "readonly");
+				$("#driverClassName").attr("readonly", "readonly");
+				$("#dataSourceIp").attr("readonly", "readonly");
+				$("#dataSourcePort").attr("readonly", "readonly");
+				$("#dataSourceName").attr("readonly", "readonly");
+				$("#username").attr("readonly", "readonly");
+				$("#password").attr("readonly", "readonly");
+				$("#save2").hide();
+				$("#edit2").removeAttr("disabled");
+				$.globalMessenger().post({
+					message: "保存成功",
+					type: 'success',//消息类型。error、info、success
+					hideOnNavigate: true
+				});
+			},
+			error: function() {
+				$.globalMessenger().post({
+					message: "数据库无法连接，保存失败",
+					type: 'error',//消息类型。error、info、success
+					hideOnNavigate: true
+				});
+			}
+		});
 	};
 	function save1() {
 		$.ajax({
@@ -186,6 +280,37 @@
 				$("#edit1").removeAttr("disabled");
 				$.globalMessenger().post({
 					message: "保存成功",
+					type: 'success',//消息类型。error、info、success
+					hideOnNavigate: true
+				});
+			}
+		});
+	};
+	function test() {
+		$.ajax({
+			type: "post",
+			url: "/sys/dataSource/setDataSource",
+			contentType: "application/json; charset=utf-8",
+			data: JSON.stringify({
+				"dataSourceType": $("#dataSourceType").val(),
+				"driverClassName": $("#driverClassName").val(),
+				"dataSourceIp": $("#dataSourceIp").val(),
+				"dataSourcePort": $("#dataSourcePort").val(),
+				"dataSourceName": $("#dataSourceName").val(),
+				"username": $("#username").val(),
+				"password": $("#password").val()
+			}),
+			dataType: "json",
+			success: function () {
+				$("#dataSourceType").attr("readonly", "readonly");
+				$("#driverClassName").attr("readonly", "readonly");
+				$("#dataSourceIp").attr("readonly", "readonly");
+				$("#dataSourcePort").attr("readonly", "readonly");
+				$("#dataSourceName").attr("readonly", "readonly");
+				$("#username").attr("readonly", "readonly");
+				$("#password").attr("readonly", "readonly");
+				$.globalMessenger().post({
+					message: "连接成功",
 					type: 'success',//消息类型。error、info、success
 					hideOnNavigate: true
 				});

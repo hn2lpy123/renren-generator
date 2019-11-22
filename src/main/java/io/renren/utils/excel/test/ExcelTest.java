@@ -1,7 +1,6 @@
 package io.renren.utils.excel.test;
 
 import com.alibaba.excel.EasyExcel;
-import io.renren.utils.excel.bean.CompanyInfo;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -20,7 +19,6 @@ public class ExcelTest {
         EasyExcel.read(fileName, new NotPropProjectDataListener()).sheet("地产公司").doRead();
         EasyExcel.read(fileName, new NotPropProjectDataListener()).sheet("其他产业集团").doRead();
         EasyExcel.read(fileName, new PropProjectDataListener()).sheet("物业公司").doRead();
-        System.out.println(companyInfoSet.size());
         saveCompanyInfo(companyInfoSet);
         System.out.println("====end====");
     }

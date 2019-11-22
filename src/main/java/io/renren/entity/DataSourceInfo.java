@@ -1,5 +1,7 @@
 package io.renren.entity;
 
+import io.renren.utils.StringUtils;
+
 import java.io.Serializable;
 
 public class DataSourceInfo implements Serializable {
@@ -31,6 +33,24 @@ public class DataSourceInfo implements Serializable {
             }
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return StringUtils.toHash(this.toString());
+    }
+
+    @Override
+    public String toString() {
+        return "DataSourceInfo{" +
+                "dataSourceType='" + dataSourceType + '\'' +
+                ", driverClassName='" + driverClassName + '\'' +
+                ", dataSourceIp='" + dataSourceIp + '\'' +
+                ", dataSourcePort='" + dataSourcePort + '\'' +
+                ", dataSourceName='" + dataSourceName + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 
     public String getUrl() {
