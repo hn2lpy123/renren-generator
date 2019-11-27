@@ -98,13 +98,16 @@
 						<!-- text input -->
 						<div class="form-group">
 							<label>DataSourceType</label>
-							<input id="dataSourceType" type="text" class="form-control" placeholder="Enter ..." readonly>
+							<select id="dataSourceType" class="form-control" disabled>
+								<option value="oracle">oracle</option>
+								<option value="mysql">mysql</option>
+							</select>
 						</div>
 					</div>
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>DriverClassName</label>
-							<input id="driverClassName" type="text" class="form-control" placeholder="Enter ..." readonly>
+							<input id="driverClassName" type="text" class="form-control" placeholder="com.mysql.jdbc.Driver" readonly>
 						</div>
 					</div>
 				</div>
@@ -133,7 +136,7 @@
 					<div class="col-sm-6">
 						<div class="form-group">
 							<label>Password</label>
-							<input id="password" type="text" class="form-control" placeholder="Enter ..." readonly>
+							<input id="password" type="password" class="form-control" placeholder="Enter ..." readonly>
 						</div>
 					</div>
 				</div>
@@ -208,7 +211,7 @@
 			$("#save1").show();
 			$("#edit1").attr("disabled", "disabled");
 		} else if (type = 2) {
-			$("#dataSourceType").removeAttr("readonly");
+			$("#dataSourceType").removeAttr("disabled");
 			$("#driverClassName").removeAttr("readonly");
 			$("#dataSourceIp").removeAttr("readonly");
 			$("#dataSourcePort").removeAttr("readonly");
@@ -235,27 +238,28 @@
 			}),
 			dataType: "json",
 			success: function (data) {
-				$("#dataSourceType").attr("readonly", "readonly");
-				$("#driverClassName").attr("readonly", "readonly");
-				$("#dataSourceIp").attr("readonly", "readonly");
-				$("#dataSourcePort").attr("readonly", "readonly");
-				$("#dataSourceName").attr("readonly", "readonly");
-				$("#username").attr("readonly", "readonly");
-				$("#password").attr("readonly", "readonly");
-				$("#save2").hide();
-				$("#edit2").removeAttr("disabled");
-				$.globalMessenger().post({
-					message: "保存成功",
-					type: 'success',//消息类型。error、info、success
-					hideOnNavigate: true
-				});
-			},
-			error: function() {
-				$.globalMessenger().post({
-					message: "数据库无法连接，保存失败",
-					type: 'error',//消息类型。error、info、success
-					hideOnNavigate: true
-				});
+				if (data.code === 1) {
+					$("#dataSourceType").attr("disabled", "disabled");
+					$("#driverClassName").attr("readonly", "readonly");
+					$("#dataSourceIp").attr("readonly", "readonly");
+					$("#dataSourcePort").attr("readonly", "readonly");
+					$("#dataSourceName").attr("readonly", "readonly");
+					$("#username").attr("readonly", "readonly");
+					$("#password").attr("readonly", "readonly");
+					$("#save2").hide();
+					$("#edit2").removeAttr("disabled");
+					$.globalMessenger().post({
+						message: "保存成功",
+						type: 'success',//消息类型。error、info、success
+						hideOnNavigate: true
+					});
+				} else {
+					$.globalMessenger().post({
+						message: data.message,
+						type: 'error',//消息类型。error、info、success
+						hideOnNavigate: true
+					});
+				}
 			}
 		});
 	};
@@ -289,7 +293,7 @@
 	function test() {
 		$.ajax({
 			type: "post",
-			url: "/sys/dataSource/setDataSource",
+			url: "/sys/dataSource/testDataSource",
 			contentType: "application/json; charset=utf-8",
 			data: JSON.stringify({
 				"dataSourceType": $("#dataSourceType").val(),
@@ -301,19 +305,20 @@
 				"password": $("#password").val()
 			}),
 			dataType: "json",
-			success: function () {
-				$("#dataSourceType").attr("readonly", "readonly");
-				$("#driverClassName").attr("readonly", "readonly");
-				$("#dataSourceIp").attr("readonly", "readonly");
-				$("#dataSourcePort").attr("readonly", "readonly");
-				$("#dataSourceName").attr("readonly", "readonly");
-				$("#username").attr("readonly", "readonly");
-				$("#password").attr("readonly", "readonly");
-				$.globalMessenger().post({
-					message: "连接成功",
-					type: 'success',//消息类型。error、info、success
-					hideOnNavigate: true
-				});
+			success: function (data) {
+				if (data.code === 1) {
+					$.globalMessenger().post({
+						message: "连接成功",
+						type: 'success',//消息类型。error、info、success
+						hideOnNavigate: true
+					});
+				} else {
+					$.globalMessenger().post({
+						message: data.message,
+						type: 'error',//消息类型。error、info、success
+						hideOnNavigate: true
+					});
+				}
 			}
 		});
 	};

@@ -32,7 +32,6 @@ public class DataSourceController {
         if (!dataSourceInfo.equals(DBIdentifier.getDataSourceInfo())) {
             DBIdentifier.setDataSourceInfo(dataSourceInfo);
             DDSHolder.instance().clearDDS();
-            dataSource.getConnection();
         }
         return new CommonDto(CommonCodeType.SUCCESS);
     }

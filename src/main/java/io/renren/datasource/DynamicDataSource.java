@@ -75,6 +75,13 @@ public class DynamicDataSource extends DataSource {
         }
         dds.setPoolProperties(property);
 
+        // 设置数据库连接默认属性
+        dds.setValidationQuery("SELECT 1");
+        dds.setMaxWait(12000);
+        dds.setTestWhileIdle(true);
+        dds.setTestOnBorrow(true);
+
+        // 设置数据库连接connect属性
         dds.setUrl(dataSourceInfo.getUrl());
         dds.setDriverClassName(dataSourceInfo.getDriverClassName());
         dds.setUsername(dataSourceInfo.getUsername());

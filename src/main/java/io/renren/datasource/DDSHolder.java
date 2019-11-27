@@ -2,12 +2,6 @@ package io.renren.datasource;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Timer;
-
 /**
  * 动态数据源管理器。
  *
@@ -52,6 +46,7 @@ public class DDSHolder {
 		if (dataSource != null) {
 			dataSource.close();
 		}
+		dataSource = null;
 	}
 	
 	/**
