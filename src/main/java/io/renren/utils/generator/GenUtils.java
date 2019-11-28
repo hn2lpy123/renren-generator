@@ -53,9 +53,9 @@ public class GenUtils {
 		templates.add("template/Service.java.vm");
 		templates.add("template/ServiceImpl.java.vm");
 		templates.add("template/Controller.java.vm");
-		templates.add("template/list.html.vm");
-		templates.add("template/list.js.vm");
-		templates.add("template/menu.sql.vm");
+//		templates.add("template/list.html.vm");
+//		templates.add("template/list.js.vm");
+//		templates.add("template/menu.sql.vm");
 		return templates;
 	}
 	
@@ -208,7 +208,7 @@ public class GenUtils {
 		}
 		
 		if(template.contains("Entity.java.vm")){
-			return packagePath + "entity" + File.separator + className + "Entity.java";
+			return packagePath + "entity" + File.separator + className + ".java";
 		}
 		
 		if(template.contains("Dao.java.vm")){
@@ -231,19 +231,19 @@ public class GenUtils {
 			return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + "generator" + File.separator + className + "Dao.xml";
 		}
 
-		if(template.contains("list.html.vm")){
-			return "main" + File.separator + "resources" + File.separator + "views" + File.separator
-					+ "modules" + File.separator + "generator" + File.separator + className.toLowerCase() + ".html";
-		}
-		
-		if(template.contains("list.js.vm")){
-			return "main" + File.separator + "resources" + File.separator + "static" + File.separator + "js" + File.separator
-					+ "modules" + File.separator + "generator" + File.separator + className.toLowerCase() + ".js";
-		}
-
-		if(template.contains("menu.sql.vm")){
-			return className.toLowerCase() + "_menu.sql";
-		}
+//		if(template.contains("list.html.vm")){
+//			return "main" + File.separator + "resources" + File.separator + "views" + File.separator
+//					+ "modules" + File.separator + "generator" + File.separator + className.toLowerCase() + ".html";
+//		}
+//
+//		if(template.contains("list.js.vm")){
+//			return "main" + File.separator + "resources" + File.separator + "static" + File.separator + "js" + File.separator
+//					+ "modules" + File.separator + "generator" + File.separator + className.toLowerCase() + ".js";
+//		}
+//
+//		if(template.contains("menu.sql.vm")){
+//			return className.toLowerCase() + "_menu.sql";
+//		}
 		
 		return null;
 	}
