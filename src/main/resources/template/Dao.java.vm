@@ -1,6 +1,6 @@
 package ${package}.dao;
 
-import ${package}.entity.${className}Entity;
+import ${package}.entity.${className};
 import io.renren.modules.sys.dao.BaseDao;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,6 +12,6 @@ import org.apache.ibatis.annotations.Mapper;
  * @date ${datetime}
  */
 @Mapper
-public interface ${className}Dao extends BaseDao<${className}Entity> {
+public interface ${className}Dao extends BaseDao<${className}> {
 	
 }

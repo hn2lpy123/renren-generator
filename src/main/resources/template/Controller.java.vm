@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import ${package}.entity.${className}Entity;
+import ${package}.entity.${className};
 import ${package}.service.${className}Service;
 import io.renren.common.utils.PageUtils;
 import io.renren.common.utils.Query;
@@ -42,7 +42,7 @@ public class ${className}Controller {
 		//查询列表数据
         Query query = new Query(params);
 
-		List<${className}Entity> ${classname}List = ${classname}Service.queryList(query);
+		List<${className}> ${classname}List = ${classname}Service.queryList(query);
 		int total = ${classname}Service.queryTotal(query);
 		
 		PageUtils pageUtil = new PageUtils(${classname}List, total, query.getLimit(), query.getPage());
@@ -57,7 +57,7 @@ public class ${className}Controller {
 	@RequestMapping("/info/{${pk.attrname}}")
 	@RequiresPermissions("${pathName}:info")
 	public R info(@PathVariable("${pk.attrname}") ${pk.attrType} ${pk.attrname}){
-		${className}Entity ${classname} = ${classname}Service.queryObject(${pk.attrname});
+		${className} ${classname} = ${classname}Service.queryObject(${pk.attrname});
 		
 		return R.ok().put("${classname}", ${classname});
 	}
@@ -67,7 +67,7 @@ public class ${className}Controller {
 	 */
 	@RequestMapping("/save")
 	@RequiresPermissions("${pathName}:save")
-	public R save(@RequestBody ${className}Entity ${classname}){
+	public R save(@RequestBody ${className} ${classname}){
 		${classname}Service.save(${classname});
 		
 		return R.ok();
@@ -78,7 +78,7 @@ public class ${className}Controller {
 	 */
 	@RequestMapping("/update")
 	@RequiresPermissions("${pathName}:update")
-	public R update(@RequestBody ${className}Entity ${classname}){
+	public R update(@RequestBody ${className} ${classname}){
 		${classname}Service.update(${classname});
 		
 		return R.ok();
