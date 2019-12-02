@@ -2,10 +2,12 @@ package io.renren.controller;
 
 import com.alibaba.fastjson.JSON;
 import io.renren.entity.CommonDto;
+import io.renren.entity.ExtraField;
 import io.renren.entity.GeneratorInfo;
 import io.renren.service.SysGeneratorService;
 import io.renren.utils.annotation.NoRepeatSubmit;
 import io.renren.utils.constant.CommonCodeType;
+import io.renren.utils.constant.ExtraFieldType;
 import io.renren.utils.generator.GenUtils;
 import io.renren.utils.generator.PageUtils;
 import io.renren.utils.generator.Query;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -95,5 +98,17 @@ public class SysGeneratorController {
 		return new CommonDto<>(CommonCodeType.SUCCESS, new GeneratorInfo(GenUtils.initData.get(GenUtils.PACKAGE).toString(),
 				GenUtils.initData.get(GenUtils.AUTHOR).toString(), GenUtils.initData.get(GenUtils.EMAIL).toString(),
 				GenUtils.initData.get(GenUtils.TABLEPREFIX).toString()));
+	}
+
+	/**
+	 * 获取
+	 */
+	@RequestMapping("/getExtraFields")
+	@ResponseBody
+	public CommonDto getExtraFields() {
+		List<ExtraField> fields = new ArrayList<>();
+		ExtraField field = new ExtraField(ExtraFieldType.STRING.getValue(), "test", "extraFieldValue");
+		fields.add(field);
+		return new CommonDto<>(CommonCodeType.SUCCESS, fields);
 	}
 }

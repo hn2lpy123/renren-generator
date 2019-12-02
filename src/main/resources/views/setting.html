@@ -1,4 +1,4 @@
--<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<title>基础信息设置</title>
@@ -19,8 +19,11 @@
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 	<link rel="stylesheet" href="css/messenger.css">
 	<link rel="stylesheet" href="css/messenger-theme-future.css">
+	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<script src="libs/jquery.min.js"></script>
 	<script src="libs/bootstrap.min.js"></script>
+	<script src="plugins/jqgrid/grid.locale-cn.js"></script>
+	<script src="plugins/jqgrid/jquery.jqGrid.min.js"></script>
 	<script src="libs/vue.min.js"></script>
 	<script src="libs/messenger.min.js"></script>
 </head>
@@ -65,22 +68,6 @@
 						</div>
 					</div>
 				</div>
-				<!-- input states -->
-<!--				<div class="form-group">-->
-<!--					<label class="col-form-label" for="inputSuccess"><i class="glyphicon glyphicon-ok"></i> Input with-->
-<!--						success</label>-->
-<!--					<input type="text" class="form-control is-valid" id="inputSuccess" placeholder="Enter ...">-->
-<!--				</div>-->
-<!--				<div class="form-group">-->
-<!--					<label class="col-form-label" for="inputWarning"><i class="far fa-bell"></i> Input with-->
-<!--						warning</label>-->
-<!--					<input type="text" class="form-control is-warning" id="inputWarning" placeholder="Enter ...">-->
-<!--				</div>-->
-<!--				<div class="form-group">-->
-<!--					<label class="col-form-label" for="inputError"><i class="far fa-times-circle"></i> Input with-->
-<!--						error</label>-->
-<!--					<input type="text" class="form-control is-invalid" id="inputError" placeholder="Enter ...">-->
-<!--				</div>-->
 		</div>
 	</div>
 
@@ -156,12 +143,14 @@
 		<div class="card-header">
 			<h3 class="card-title">自定义模板参数
 				&nbsp;&nbsp;&nbsp;&nbsp;<button id="edit3" type="button" class="btn btn-info btn-sm" onclick="edit(3)">编辑</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;<button id="add" type="button" class="btn btn-primary btn-sm" onclick="addParam()">新增</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;<button id="save3" type="button" class="btn btn-success btn-sm" onclick="save(3)">保存</button></h3>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button id="add" type="button" class="btn btn-primary btn-sm" onclick="addField()">新增</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button id="save3" type="button" class="btn btn-success btn-sm" onclick="delete(3)">删除</button></h3>
 		</div>
+		<div class="row"></div>
 		<!-- 自定义模板参数 -->
-		<div class="card-body">
-
+		<div class="card-body p-0">
+			<table id="extraFieldTable"></table>
+			<div id="jqGridPager"></div>
 		</div>
 	</div>
 </form>
@@ -207,11 +196,33 @@
 				});
 			}
 		});
+		$("#extraFieldTable").jqGrid({
+			url: 'sys/generator/getExtraFields',
+			datatype: "json",
+			styleUI: "Bootstrap",
+			height: 300,
+			rownumbers: true,
+			rownumWidth: 25,
+			autowidth:true,
+			colModel: [
+				{ name: 'extraFieldType', sortable: false, index: 'extraFieldType', width: 50, editable: true, edittype: "select", editoptions: { value : "class:类;string:字符串" }},
+				{ name: 'extraFieldName', sortable: false, index: 'extraFieldName', width: 60, editable: true, editoptions: { size : 60 }},
+				{ name: 'extraFieldValue', sortable: false, index: 'extraFieldValue', width: 90, editable: true, editoptions: { size : 90 }}
+			],
+			jsonReader : {
+				root: "data"
+			},
+			pager: "#jqGridPager",
+			gridComplete:function(){
+				//隐藏grid底部滚动条
+				$("#extraFieldTable").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
+			}
+		});
 	});
 	function save(type) {
 		if (type == 1) {
 			save1();
-		} else if (type = 2) {
+		} else if (type == 2) {
 			save2();
 		}
 	};
@@ -223,7 +234,7 @@
 			$("#tablePrefix").removeAttr("readonly");
 			$("#save1").show();
 			$("#edit1").attr("disabled", "disabled");
-		} else if (type = 2) {
+		} else if (type == 2) {
 			$("#dataSourceType").removeAttr("disabled");
 			$("#driverClassName").removeAttr("readonly");
 			$("#dataSourceIp").removeAttr("readonly");
@@ -334,6 +345,15 @@
 				}
 			}
 		});
+	};
+	function addField() {
+		var gr = jQuery("#delgrid").jqGrid('getGridParam', 'selrow');
+		if (gr != null)
+			jQuery("#delgrid").jqGrid('delGridRow', gr, {
+				reloadAfterSubmit : false
+			});
+		else
+			alert("Please Select Row to delete!");
 	};
 </script>
 </body>
