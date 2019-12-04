@@ -6,8 +6,8 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="plugins/bootstrap-table/bootstrap-table.min.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="plugins/jqgrid/ui.jqgrid-bootstrap.css">
 	<link rel="stylesheet" href="css/main.css">
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="css/all.min.css">
@@ -16,20 +16,25 @@
 	<!-- Theme style -->
 <!--	<link rel="stylesheet" href="css/adminlte/adminlte.min.css">-->
 	<!-- Google Font: Source Sans Pro -->
-	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+<!--	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">-->
+	<link rel="stylesheet" href="css/google-font.css">
 	<link rel="stylesheet" href="css/messenger.css">
 	<link rel="stylesheet" href="css/messenger-theme-future.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<script src="libs/jquery.min.js"></script>
+	<script src="plugins/bootstrap-table/popper.min.js"></script>
+	<script src="libs/xlsx.core.min.js"></script>
+	<script src="libs/tableExport.min.js"></script>
 	<script src="libs/bootstrap.min.js"></script>
-	<script src="plugins/jqgrid/grid.locale-cn.js"></script>
-	<script src="plugins/jqgrid/jquery.jqGrid.min.js"></script>
-	<script src="libs/vue.min.js"></script>
+	<script src="plugins/bootstrap-table/bootstrap-table.min.js"></script>
+	<script src="plugins/bootstrap-table/bootstrap-table-export.min.js"></script>
+	<script src="plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
 	<script src="libs/messenger.min.js"></script>
+
 </head>
 <body>
 <div>
-<form role="form">
+	<form role="form">
 	<div class="card card-warning">
 		<div class="card-header">
 			<h3 class="card-title">Code信息配置
@@ -142,22 +147,47 @@
 	<div class="card card-warning">
 		<div class="card-header">
 			<h3 class="card-title">自定义模板参数
-				&nbsp;&nbsp;&nbsp;&nbsp;<button id="edit3" type="button" class="btn btn-info btn-sm" onclick="edit(3)">编辑</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;<button id="add" type="button" class="btn btn-primary btn-sm" onclick="addField()">新增</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;<button id="save3" type="button" class="btn btn-success btn-sm" onclick="delete(3)">删除</button></h3>
+			</h3>
 		</div>
 		<div class="row"></div>
 		<!-- 自定义模板参数 -->
 		<div class="card-body p-0">
-			<table id="extraFieldTable"></table>
-			<div id="jqGridPager"></div>
+			<div id="toolbar" class="toolbar">
+				<div style="float:left"><input id="nameParam" type="text" class="form-control" placeholder="ExtraFieldName..."></div>
+				<div style="float:left;margin-left:10px;">
+				<button type="button" class="btn btn-dark btn-sm"><i class="glyphicon glyphicon-search"></i> 查询</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addFieldModal"><i class="glyphicon glyphicon-plus"></i> 新增</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="upload" type="button" class="btn btn-info btn-sm" onclick="upload(3)"><i class="fa fa-upload"></i> 导入</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="download" type="button" class="btn btn-primary btn-sm" onclick="download()"><i class="fa fa-download"></i> 导出</button>
+				</div>
+			</div>
+			<table id="extraFieldTable"class="table-bordered table-striped"></table>
 		</div>
 	</div>
 </form>
+<div class="modal fade" id="addFieldModal" tabindex="999" role="dialog" aria-labelledby="myModalLabel"  >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">创建自定义参数</h4>
+			</div>
+			<div class="modal-body">
+				<p>One fine body&hellip;</p>
+			</div>
+			<div class="modal-footer justify-content-between">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				<button type="button" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
 </div>
-
+</div>
+<script src="js/extraFieldTable.js"></script>
 <script type="text/javascript">
 	$._messengerDefaults = { extraClasses: 'messenger-fixed messenger-theme-future messenger-on-top messenger-on-right' }
+	let $table = $('#extraFieldTable');
+	initExtraTable();
 	$(document).ready(function(){
 		$("#save1").hide();
 		$("#save2").hide();
@@ -194,28 +224,6 @@
 					showCloseButton: false,//是否显示关闭按钮
 					hideOnNavigate: true
 				});
-			}
-		});
-		$("#extraFieldTable").jqGrid({
-			url: 'sys/generator/getExtraFields',
-			datatype: "json",
-			styleUI: "Bootstrap",
-			height: 300,
-			rownumbers: true,
-			rownumWidth: 25,
-			autowidth:true,
-			colModel: [
-				{ name: 'extraFieldType', sortable: false, index: 'extraFieldType', width: 50, editable: true, edittype: "select", editoptions: { value : "class:类;string:字符串" }},
-				{ name: 'extraFieldName', sortable: false, index: 'extraFieldName', width: 60, editable: true, editoptions: { size : 60 }},
-				{ name: 'extraFieldValue', sortable: false, index: 'extraFieldValue', width: 90, editable: true, editoptions: { size : 90 }}
-			],
-			jsonReader : {
-				root: "data"
-			},
-			pager: "#jqGridPager",
-			gridComplete:function(){
-				//隐藏grid底部滚动条
-				$("#extraFieldTable").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" });
 			}
 		});
 	});
@@ -345,15 +353,6 @@
 				}
 			}
 		});
-	};
-	function addField() {
-		var gr = jQuery("#delgrid").jqGrid('getGridParam', 'selrow');
-		if (gr != null)
-			jQuery("#delgrid").jqGrid('delGridRow', gr, {
-				reloadAfterSubmit : false
-			});
-		else
-			alert("Please Select Row to delete!");
 	};
 </script>
 </body>
