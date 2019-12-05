@@ -187,6 +187,9 @@ public class SysGeneratorController {
 	@PostMapping("/importExtraField")
 	@ResponseBody
 	public CommonDto importExtraField(MultipartFile file) throws IOException {
+		if (GenUtils.extraFields.size() > GenUtils.EXTRA_FIELD_MAX) {
+			return new CommonDto(CommonCodeType.EXTRA_FIELD_MAX);
+		}
 		EasyExcel.read(file.getInputStream(), ExtraField.class, new ExtraFieldListener()).sheet().doRead();
 		return new CommonDto(CommonCodeType.SUCCESS);
 	}

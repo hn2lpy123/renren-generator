@@ -83,12 +83,12 @@ function doDelete(arr) {
 
 function deleteExtraField(row) {
     console.log(row);
-    let arr = [];
+    var arr = [];
     arr.push(row);
-    doDelete();
+    doDelete(arr);
 };
 function batchDelete() {
-    let arr = $table.bootstrapTable('getSelections');
+    var arr = $table.bootstrapTable('getSelections');
     if (arr.length > 0) {
         doDelete(arr)
     } else {

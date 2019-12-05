@@ -42,7 +42,7 @@ public class GenUtils {
 
 	public static final List<ExtraField> extraFields = Lists.newArrayList();
 
-	public static Integer EXTRA_FIELD_MAX = 1000;
+	public static Integer EXTRA_FIELD_MAX = 2000;
 
 	public static final String PACKAGE = "package";
 
