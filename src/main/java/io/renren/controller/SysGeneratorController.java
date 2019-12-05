@@ -1,29 +1,32 @@
 package io.renren.controller;
 
+import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import io.renren.entity.CommonDto;
 import io.renren.entity.ExtraField;
 import io.renren.entity.GeneratorInfo;
 import io.renren.service.SysGeneratorService;
 import io.renren.utils.annotation.NoRepeatSubmit;
 import io.renren.utils.constant.CommonCodeType;
-import io.renren.utils.constant.ExtraFieldType;
+import io.renren.utils.excel.Listener.ExtraFieldListener;
 import io.renren.utils.generator.GenUtils;
 import io.renren.utils.generator.PageUtils;
 import io.renren.utils.generator.Query;
 import io.renren.utils.generator.R;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.net.URLEncoder;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -101,14 +104,90 @@ public class SysGeneratorController {
 	}
 
 	/**
-	 * 获取
+	 * 获取自定义模板参数
 	 */
 	@RequestMapping("/getExtraFields")
 	@ResponseBody
 	public CommonDto getExtraFields() {
-		List<ExtraField> fields = new ArrayList<>();
-		ExtraField field = new ExtraField(ExtraFieldType.STRING.getValue(), "test", "extraFieldValue");
-		fields.add(field);
-		return new CommonDto<>(CommonCodeType.SUCCESS, fields);
+		return new CommonDto<>(CommonCodeType.SUCCESS, GenUtils.extraFields);
+	}
+
+	/**
+	 * 新增自定义模板参数
+	 */
+	@RequestMapping("/addExtraField")
+	@ResponseBody
+	public CommonDto addExtraField(@RequestBody ExtraField extraField) {
+		if (GenUtils.extraFields.size() > GenUtils.EXTRA_FIELD_MAX) {
+			return new CommonDto(CommonCodeType.EXTRA_FIELD_MAX);
+		}
+		GenUtils.extraFields.add(extraField);
+		return new CommonDto<>(CommonCodeType.SUCCESS);
+	}
+
+	/**
+	 * 修改自定义模板参数
+	 */
+	@RequestMapping("/editExtraField")
+	@ResponseBody
+	public CommonDto editExtraField(@RequestBody ExtraField extraField) {
+		for (ExtraField field : GenUtils.extraFields) {
+			if (field.getExtraFieldName().equals(extraField.getExtraFieldName())) {
+				field.setExtraFieldType(extraField.getExtraFieldType());
+				field.setExtraFieldValue(extraField.getExtraFieldValue());
+				break;
+			}
+		}
+		return new CommonDto<>(CommonCodeType.SUCCESS);
+	}
+
+	/**
+	 * 批量删除自定义模板参数
+	 */
+	@RequestMapping("/batchDeleteField")
+	@ResponseBody
+	public CommonDto batchDeleteField(@RequestBody List<ExtraField> extraFields) {
+		for (ExtraField field : extraFields) {
+			Iterator<ExtraField> iterable = GenUtils.extraFields.iterator();
+			while (iterable.hasNext()) {
+				ExtraField extraField = iterable.next();
+				if (extraField.getExtraFieldName().equals(field.getExtraFieldName())) {
+					iterable.remove();
+					break;
+				}
+			}
+		}
+		return new CommonDto<>(CommonCodeType.SUCCESS);
+	}
+
+	/**
+	 * 导出自定义模板参数
+	 */
+	@RequestMapping("/exportExtraField")
+	@ResponseBody
+	public void exportExtraField(String filter, HttpServletResponse response) throws IOException {
+		List<ExtraField> data = Lists.newArrayList(Iterables.filter(GenUtils.extraFields, input -> {
+			if (StringUtils.isBlank(filter)) {
+				return true;
+			} else {
+				return filter.equals(input.getExtraFieldName());
+			}
+		}));
+		response.setContentType("application/vnd.ms-excel");
+		response.setCharacterEncoding("utf-8");
+
+		String fileName = URLEncoder.encode("ExtraFields", "UTF-8");
+		response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+		EasyExcel.write(response.getOutputStream(), ExtraField.class).sheet("ExtraField").doWrite(data);
+	}
+
+	/**
+	 * 导入自定义模板参数
+	 */
+	@PostMapping("/importExtraField")
+	@ResponseBody
+	public CommonDto importExtraField(MultipartFile file) throws IOException {
+		EasyExcel.read(file.getInputStream(), ExtraField.class, new ExtraFieldListener()).sheet().doRead();
+		return new CommonDto(CommonCodeType.SUCCESS);
 	}
 }

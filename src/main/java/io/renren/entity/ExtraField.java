@@ -1,19 +1,35 @@
 package io.renren.entity;
 
+import com.alibaba.excel.annotation.ExcelProperty;
+import com.alibaba.excel.annotation.write.style.ColumnWidth;
+import com.alibaba.excel.annotation.write.style.ContentRowHeight;
+import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.renren.utils.constant.ExtraFieldType;
+import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+@ContentRowHeight(12)
+@HeadRowHeight(16)
 public class ExtraField implements Serializable {
 
     public static final String CLASS_SUFFIX = "ClassName";
 
+    @NotBlank(message = "extraFieldType不能为空")
+    @ExcelProperty(index = 0, value = "ExtraFieldType")
+    @ColumnWidth(20)
     private String extraFieldType;
 
+    @NotBlank(message = "extraFieldName不能为空")
+    @ExcelProperty(index = 1, value = "ExtraFieldType")
+    @ColumnWidth(25)
     private String extraFieldName;
 
+    @NotBlank(message = "extraFieldValue不能为空")
+    @ExcelProperty(index = 2, value = "ExtraFieldType")
+    @ColumnWidth(35)
     private String extraFieldValue;
 
     public ExtraField() {
@@ -56,5 +72,14 @@ public class ExtraField implements Serializable {
 
     public void setExtraFieldValue(String extraFieldValue) {
         this.extraFieldValue = extraFieldValue;
+    }
+
+    @Override
+    public String toString() {
+        return "ExtraField{" +
+                "extraFieldType='" + extraFieldType + '\'' +
+                ", extraFieldName='" + extraFieldName + '\'' +
+                ", extraFieldValue='" + extraFieldValue + '\'' +
+                '}';
     }
 }

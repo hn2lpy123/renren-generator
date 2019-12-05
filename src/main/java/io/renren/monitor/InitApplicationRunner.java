@@ -2,6 +2,8 @@ package io.renren.monitor;
 
 import io.renren.datasource.DBIdentifier;
 import io.renren.entity.DataSourceInfo;
+import io.renren.entity.ExtraField;
+import io.renren.utils.constant.ExtraFieldType;
 import io.renren.utils.generator.GenUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,9 @@ public class InitApplicationRunner implements ApplicationRunner {
         GenUtils.initData.put(GenUtils.AUTHOR, GenUtils.getConfig().getString(GenUtils.AUTHOR));
         GenUtils.initData.put(GenUtils.EMAIL, GenUtils.getConfig().getString(GenUtils.EMAIL));
         GenUtils.initData.put(GenUtils.TABLEPREFIX, GenUtils.getConfig().getString(GenUtils.TABLEPREFIX));
+        GenUtils.extraFields.add(new ExtraField(ExtraFieldType.STRING.getValue(), "test", "extraFieldValue"));
+        GenUtils.extraFields.add(new ExtraField(ExtraFieldType.STRING.getValue(), "test2", "extraFieldValue"));
+        GenUtils.extraFields.add(new ExtraField(ExtraFieldType.STRING.getValue(), "test3", "extraFieldValue"));
         logger.info("==========end init application==========");
     }
 }

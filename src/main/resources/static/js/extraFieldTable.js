@@ -47,14 +47,55 @@ function initExtraTable() {
         ]
     })
 };
-function refresh() {
+function refreshTable() {
     $table.bootstrapTable('refresh');
 };
 function editExtraField(row) {
     alert("editExtraField success!");
     console.log(row);
 };
+
+function doDelete(arr) {
+    $.ajax({
+        type: "post",
+        url: "/sys/generator/batchDeleteField",
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(arr),
+        dataType: "json",
+        success: function (data) {
+            refreshTable();
+            if (data.code === 1) {
+                $.globalMessenger().post({
+                    message: "删除成功",
+                    type: 'success',//消息类型。error、info、success
+                    hideOnNavigate: true
+                });
+            } else {
+                $.globalMessenger().post({
+                    message: data.message,
+                    type: 'error',//消息类型。error、info、success
+                    hideOnNavigate: true
+                });
+            }
+        }
+    });
+}
+
 function deleteExtraField(row) {
-    alert("deleteExtraField success!");
     console.log(row);
+    let arr = [];
+    arr.push(row);
+    doDelete();
 };
+function batchDelete() {
+    let arr = $table.bootstrapTable('getSelections');
+    if (arr.length > 0) {
+        doDelete(arr)
+    } else {
+        $.globalMessenger().post({
+            message: "请至少选择一条记录",
+            type: 'info',//消息类型。error、info、success
+            hideOnNavigate: true
+        });
+    }
+}
