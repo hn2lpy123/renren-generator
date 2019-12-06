@@ -7,25 +7,26 @@ import io.renren.entity.DataSourceInfo;
 import io.renren.utils.constant.CommonCodeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/**
+ * 数据库接口类。
+ *
+ * @author lipingyu
+ * @version 2019-11-11
+ */
 @RestController
 @RequestMapping("/sys/dataSource")
 public class DataSourceController {
 
     private final static Logger logger = LoggerFactory.getLogger(DataSourceController.class);
 
-    @Autowired
-    private DataSource dataSource;
-
     @PostMapping("/setDataSource")
-    public CommonDto setDataSource(@RequestBody DataSourceInfo dataSourceInfo) throws SQLException {
+    public CommonDto setDataSource(@RequestBody DataSourceInfo dataSourceInfo) {
         if (!validDataSourceInfo(dataSourceInfo)) {
             return new CommonDto(CommonCodeType.DATABASE_CONNECT_FAIL);
         }

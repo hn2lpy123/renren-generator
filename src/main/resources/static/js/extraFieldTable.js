@@ -1,6 +1,6 @@
 function initExtraTable() {
     $table.bootstrapTable('destroy').bootstrapTable({
-        method: 'get',
+        method: 'post',
         url: '/sys/generator/getExtraFields',
         height: 485,
         toggle: 'table',
@@ -8,6 +8,13 @@ function initExtraTable() {
         showFullscreen: true,
         clickToSelect: true,
         search: false,
+        queryParams: function(params) {
+            var param = {
+                extraFieldName: $('#queryParam').val()
+            };
+            console.log(param);
+            return param;
+        },
         showColumns: true,
         pageNumber : 1, //初始化加载第一页
         pagination : true,//是否分页
@@ -34,7 +41,7 @@ function initExtraTable() {
         columns: [
             { checkbox: true },
             { field: 'extraFieldType', title: 'ExtraFieldType', width: "150" },
-            { field: 'extraFieldName', title: 'ExtraFieldValue', width: "300" },
+            { field: 'extraFieldName', title: 'extraFieldName', width: "300" },
             { field: 'extraFieldValue', title: 'ExtraFieldValue', width: "600" },
             { field: 'operation', title: 'Operation', align: 'center',
                 formatter:function(value,row,index){
@@ -47,9 +54,15 @@ function initExtraTable() {
         ]
     })
 };
+
+function exportData() {
+    window.location.href="/sys/generator/exportExtraField?filter=" + $('#queryParam').val();
+};
+
 function refreshTable() {
     $table.bootstrapTable('refresh');
 };
+
 function editExtraField(row) {
     alert("editExtraField success!");
     console.log(row);
@@ -79,7 +92,7 @@ function doDelete(arr) {
             }
         }
     });
-}
+};
 
 function deleteExtraField(row) {
     console.log(row);

@@ -10,6 +10,7 @@ import io.renren.entity.GeneratorInfo;
 import io.renren.service.SysGeneratorService;
 import io.renren.utils.annotation.NoRepeatSubmit;
 import io.renren.utils.constant.CommonCodeType;
+import io.renren.utils.excel.ExcelUtils;
 import io.renren.utils.excel.Listener.ExtraFieldListener;
 import io.renren.utils.generator.GenUtils;
 import io.renren.utils.generator.PageUtils;
@@ -25,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -71,10 +71,10 @@ public class SysGeneratorController {
 		
 		byte[] data = sysGeneratorService.generatorCode(tableNames);
 		
-		response.reset();  
-        response.setHeader("Content-Disposition", "attachment; filename=\"renren.zip\"");  
-        response.addHeader("Content-Length", "" + data.length);  
-        response.setContentType("application/octet-stream; charset=UTF-8");  
+		response.reset();
+        response.setHeader("Content-Disposition", "attachment; filename=\"renren.zip\"");
+        response.addHeader("Content-Length", "" + data.length);
+        response.setContentType("application/octet-stream; charset=UTF-8");
   
         IOUtils.write(data, response.getOutputStream());  
 	}
@@ -106,10 +106,17 @@ public class SysGeneratorController {
 	/**
 	 * 获取自定义模板参数
 	 */
-	@RequestMapping("/getExtraFields")
+	@PostMapping("/getExtraFields")
 	@ResponseBody
-	public CommonDto getExtraFields() {
-		return new CommonDto<>(CommonCodeType.SUCCESS, GenUtils.extraFields);
+	public CommonDto getExtraFields(@RequestBody Map<String, Object> params) {
+		String extraFieldName = (String) params.get("extraFieldName");
+		if (StringUtils.isBlank(extraFieldName)) {
+			return new CommonDto<>(CommonCodeType.SUCCESS, GenUtils.extraFields);
+		}
+		List<ExtraField> data = Lists.newArrayList(Iterables.filter(GenUtils.extraFields, input -> {
+			return input.getExtraFieldName().contains(extraFieldName);
+		}));
+		return new CommonDto<>(CommonCodeType.SUCCESS, data);
 	}
 
 	/**
@@ -165,20 +172,15 @@ public class SysGeneratorController {
 	 */
 	@RequestMapping("/exportExtraField")
 	@ResponseBody
-	public void exportExtraField(String filter, HttpServletResponse response) throws IOException {
+	public void exportExtraField(String filter, HttpServletResponse response) throws Exception {
 		List<ExtraField> data = Lists.newArrayList(Iterables.filter(GenUtils.extraFields, input -> {
 			if (StringUtils.isBlank(filter)) {
 				return true;
 			} else {
-				return filter.equals(input.getExtraFieldName());
+				return input.getExtraFieldName().contains(filter);
 			}
 		}));
-		response.setContentType("application/vnd.ms-excel");
-		response.setCharacterEncoding("utf-8");
-
-		String fileName = URLEncoder.encode("ExtraFields", "UTF-8");
-		response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
-		EasyExcel.write(response.getOutputStream(), ExtraField.class).sheet("ExtraField").doWrite(data);
+		ExcelUtils.export2Web(response, "ExtraFields", "ExtraField", ExtraField.class, data);
 	}
 
 	/**

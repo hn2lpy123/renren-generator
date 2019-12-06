@@ -96,16 +96,16 @@
 		</dependency>
 
 		<!--基于POI导出Excel-->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml</artifactId>
-			<version>${poi-ooxml.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi-ooxml-schemas</artifactId>
-			<version>${poi-ooxml-schemas.version}</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.apache.poi</groupId>-->
+<!--			<artifactId>poi-ooxml</artifactId>-->
+<!--			<version>${poi-ooxml.version}</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.apache.poi</groupId>-->
+<!--			<artifactId>poi-ooxml-schemas</artifactId>-->
+<!--			<version>${poi-ooxml-schemas.version}</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>net.sf.json-lib</groupId>
 			<artifactId>json-lib</artifactId>

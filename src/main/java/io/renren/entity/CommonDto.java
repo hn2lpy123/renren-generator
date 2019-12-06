@@ -20,14 +20,14 @@ public class CommonDto<T> implements Serializable {
         this.code = code;
     }
 
-    public CommonDto(CommonCodeType code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
     public CommonDto(CommonCodeType code, T data) {
         this.code = code;
         this.data = data;
+    }
+
+    public CommonDto(CommonCodeType code, String message) {
+        this.code = code;
+        this.message = message;
     }
 
     public CommonDto(CommonCodeType code, String message, T data) {

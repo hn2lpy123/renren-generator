@@ -11,6 +11,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+/**
+ * 自定义参数导入监听类
+ *
+ * @Author lipingyu
+ * @Date 2018-06-05
+ */
 public class ExtraFieldListener extends BaseImportListener<ExtraField> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExtraFieldListener.class);

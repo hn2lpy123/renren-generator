@@ -153,13 +153,13 @@
 		<!-- 自定义模板参数 -->
 		<div class="card-body p-0">
 			<div id="toolbar" class="toolbar">
-				<div style="float:left"><input id="nameParam" type="text" class="form-control" placeholder="ExtraFieldName..."></div>
+				<div style="float:left"><input id="queryParam" type="text" class="form-control" placeholder="ExtraFieldName..."></div>
 				<div style="float:left;margin-left:10px;">
-				<button type="button" class="btn btn-dark btn-sm"><i class="glyphicon glyphicon-search"></i> 查询</button>
+				<button type="button" class="btn btn-dark btn-sm" onclick="refreshTable()"><i class="glyphicon glyphicon-search"></i> 查询</button>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' class='btn btn-danger btn-sm' onclick="batchDelete()"><i class="glyphicon glyphicon-minus"></i> 批量删除</button>
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#addFieldModal"><i class="glyphicon glyphicon-plus"></i> 新增</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="upload" type="button" class="btn btn-info btn-sm" onclick="upload(3)"><i class="fa fa-upload"></i> 导入</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="download" type="button" class="btn btn-primary btn-sm" onclick="download()"><i class="fa fa-download"></i> 导出</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="upload" type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#importDataModal"><i class="fa fa-upload"></i> 导入</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button id="download" type="button" class="btn btn-primary btn-sm" onclick="exportData()"><i class="fa fa-download"></i> 导出</button>
 				</div>
 			</div>
 			<table id="extraFieldTable" class="table-bordered table-striped"></table>
@@ -178,6 +178,24 @@
 			<div class="modal-footer justify-content-between">
 				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				<button type="button" class="btn btn-primary">保存</button>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+</div>
+<div class="modal fade" id="importDataModal" tabindex="999" role="dialog" aria-labelledby="myModalLabel"  >
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">上传</h4>
+			</div>
+			<div class="modal-body">
+				<p>One fine body&hellip;</p>
+			</div>
+			<div class="modal-footer justify-content-between">
+				<button type="button" class="btn btn-success" onclick="downTemplate()">下载模板</button>
+<!--				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+				<button type="button" class="btn btn-primary">上传</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -228,6 +246,9 @@
 			}
 		});
 	});
+	function downTemplate() {
+		window.location.href = "/sys/"
+	}
 	function save(type) {
 		if (type == 1) {
 			save1();

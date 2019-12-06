@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author Jiaju Zhuang
  */
-public class NoModleDataListener extends BaseListener<Map<Integer, String>> {
+public class NoModleDataListener extends BaseImportListener<Map<Integer, String>> {
     private static final Logger LOGGER = LoggerFactory.getLogger(NoModleDataListener.class);
     /**
      * 每隔1000条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收

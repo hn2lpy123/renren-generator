@@ -1,5 +1,6 @@
 package io.renren.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
@@ -15,6 +16,7 @@ import java.util.Map;
 @HeadRowHeight(16)
 public class ExtraField implements Serializable {
 
+    @ExcelIgnore
     public static final String CLASS_SUFFIX = "ClassName";
 
     @NotBlank(message = "extraFieldType不能为空")
@@ -23,12 +25,12 @@ public class ExtraField implements Serializable {
     private String extraFieldType;
 
     @NotBlank(message = "extraFieldName不能为空")
-    @ExcelProperty(index = 1, value = "ExtraFieldType")
+    @ExcelProperty(index = 1, value = "ExtraFieldName")
     @ColumnWidth(25)
     private String extraFieldName;
 
     @NotBlank(message = "extraFieldValue不能为空")
-    @ExcelProperty(index = 2, value = "ExtraFieldType")
+    @ExcelProperty(index = 2, value = "ExtraFieldValue")
     @ColumnWidth(35)
     private String extraFieldValue;
 
