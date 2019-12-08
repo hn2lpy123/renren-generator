@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ContentRowHeight(12)
-@HeadRowHeight(16)
+@HeadRowHeight(24)
 public class ExtraField implements Serializable {
 
     @ExcelIgnore
