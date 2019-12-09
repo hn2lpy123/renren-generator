@@ -1,12 +1,10 @@
-package io.renren.entity;
+package io.renren.bean;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.renren.utils.constant.CommonCodeType;
 import org.apache.commons.lang.StringUtils;
 
-import java.io.Serializable;
-
-public class CommonDto<T> implements Serializable {
+public class CommonDto<T> extends BaseBean {
     private CommonCodeType code;
 
     private String message;

@@ -1,6 +1,6 @@
 package io.renren.datasource;
 
-import io.renren.entity.DataSourceInfo;
+import io.renren.bean.DataSourceInfo;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.slf4j.Logger;

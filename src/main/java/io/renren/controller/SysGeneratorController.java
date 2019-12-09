@@ -4,14 +4,14 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import io.renren.entity.CommonDto;
-import io.renren.entity.ExtraField;
-import io.renren.entity.GeneratorInfo;
+import io.renren.bean.CommonDto;
+import io.renren.bean.ExtraField;
+import io.renren.bean.GeneratorInfo;
 import io.renren.service.SysGeneratorService;
 import io.renren.utils.annotation.NoRepeatSubmit;
 import io.renren.utils.constant.CommonCodeType;
 import io.renren.utils.excel.ExcelUtils;
-import io.renren.utils.excel.Listener.ExtraFieldListener;
+import io.renren.utils.excel.listener.DefaultImportListener;
 import io.renren.utils.generator.GenUtils;
 import io.renren.utils.generator.PageUtils;
 import io.renren.utils.generator.Query;
@@ -192,7 +192,8 @@ public class SysGeneratorController {
 		if (GenUtils.extraFields.size() > GenUtils.EXTRA_FIELD_MAX) {
 			return new CommonDto(CommonCodeType.EXTRA_FIELD_MAX);
 		}
-		EasyExcel.read(file.getInputStream(), ExtraField.class, new ExtraFieldListener()).sheet().doRead();
+		GenUtils.importErrorRows.clear();
+		EasyExcel.read(file.getInputStream(), ExtraField.class, new DefaultImportListener()).sheet().doRead();
 		return new CommonDto(CommonCodeType.SUCCESS);
 	}
 }

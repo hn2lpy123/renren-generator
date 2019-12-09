@@ -1,10 +1,8 @@
-package io.renren.entity;
+package io.renren.bean;
 
 import io.renren.utils.StringUtils;
 
-import java.io.Serializable;
-
-public class DataSourceInfo implements Serializable {
+public class DataSourceInfo extends BaseBean {
 
     private String dataSourceType;
 

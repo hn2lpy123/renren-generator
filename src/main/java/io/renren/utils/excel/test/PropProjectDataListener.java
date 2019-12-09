@@ -3,7 +3,7 @@ package io.renren.utils.excel.test;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
-import io.renren.utils.excel.Listener.NoModleDataListener;
+import io.renren.utils.excel.listener.NoModleDataListener;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

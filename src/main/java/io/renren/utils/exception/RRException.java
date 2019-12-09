@@ -1,4 +1,4 @@
-package io.renren.utils.Exception;
+package io.renren.utils.exception;
 
 import io.renren.utils.constant.CommonCodeType;
 

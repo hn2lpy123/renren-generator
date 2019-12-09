@@ -1,7 +1,7 @@
 package io.renren.monitor;
 
 import io.renren.utils.constant.CommonCodeType;
-import io.renren.utils.Exception.RRException;
+import io.renren.utils.exception.RRException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;

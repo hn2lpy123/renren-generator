@@ -1,7 +1,7 @@
 package io.renren.monitor;
 
 import io.renren.utils.constant.CommonCodeType;
-import io.renren.utils.Exception.RRException;
+import io.renren.utils.exception.RRException;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;

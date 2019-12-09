@@ -1,8 +1,8 @@
 package io.renren.monitor;
 
 import io.renren.datasource.DBIdentifier;
-import io.renren.entity.DataSourceInfo;
-import io.renren.entity.ExtraField;
+import io.renren.bean.DataSourceInfo;
+import io.renren.bean.ExtraField;
 import io.renren.utils.constant.ExtraFieldType;
 import io.renren.utils.generator.GenUtils;
 import org.slf4j.Logger;

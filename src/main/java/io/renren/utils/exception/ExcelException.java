@@ -1,4 +1,4 @@
-package io.renren.utils.Exception;
+package io.renren.utils.exception;
 
 public class ExcelException extends RuntimeException {
     public ExcelException(String message) {

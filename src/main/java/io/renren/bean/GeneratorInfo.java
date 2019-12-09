@@ -1,8 +1,6 @@
-package io.renren.entity;
+package io.renren.bean;
 
-import java.io.Serializable;
-
-public class GeneratorInfo implements Serializable {
+public class GeneratorInfo extends BaseBean {
 
     private String email;
 

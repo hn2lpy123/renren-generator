@@ -2,7 +2,7 @@ package io.renren.configration;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import io.renren.entity.DataSourceInfo;
+import io.renren.bean.DataSourceInfo;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

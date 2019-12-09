@@ -2,8 +2,8 @@ package io.renren.controller;
 
 import io.renren.datasource.DBIdentifier;
 import io.renren.datasource.DDSHolder;
-import io.renren.entity.CommonDto;
-import io.renren.entity.DataSourceInfo;
+import io.renren.bean.CommonDto;
+import io.renren.bean.DataSourceInfo;
 import io.renren.utils.constant.CommonCodeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

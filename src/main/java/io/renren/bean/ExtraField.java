@@ -1,4 +1,4 @@
-package io.renren.entity;
+package io.renren.bean;
 
 import com.alibaba.excel.annotation.ExcelIgnore;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -8,13 +8,12 @@ import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.renren.utils.constant.ExtraFieldType;
 import org.hibernate.validator.constraints.NotBlank;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 @ContentRowHeight(12)
 @HeadRowHeight(24)
-public class ExtraField implements Serializable {
+public class ExtraField extends ExcelRow {
 
     @ExcelIgnore
     public static final String CLASS_SUFFIX = "ClassName";

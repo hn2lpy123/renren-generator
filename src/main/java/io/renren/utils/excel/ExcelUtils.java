@@ -2,7 +2,7 @@ package io.renren.utils.excel;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import io.renren.utils.Exception.RRException;
+import io.renren.utils.exception.RRException;
 import io.renren.utils.constant.CommonCodeType;
 import org.apache.poi.util.IOUtils;
 import org.slf4j.Logger;
