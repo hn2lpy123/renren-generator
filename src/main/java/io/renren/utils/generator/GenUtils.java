@@ -3,10 +3,10 @@ package io.renren.utils.generator;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import io.renren.entity.ColumnEntity;
-import io.renren.entity.ExtraField;
+import io.renren.bean.ExtraField;
 import io.renren.entity.TableEntity;
 import io.renren.utils.IOUtil;
-import io.renren.utils.Exception.RRException;
+import io.renren.utils.exception.RRException;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -41,6 +41,8 @@ public class GenUtils {
 	public static final Map<String, Object> initData = Maps.newHashMap();
 
 	public static final List<ExtraField> extraFields = Lists.newArrayList();
+
+	public static List<String> importErrorRows = Lists.newArrayList();
 
 	public static Integer EXTRA_FIELD_MAX = 2000;
 
