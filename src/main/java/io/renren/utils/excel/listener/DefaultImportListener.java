@@ -2,7 +2,6 @@ package io.renren.utils.excel.listener;
 
 import com.alibaba.excel.context.AnalysisContext;
 import io.renren.bean.ExcelRow;
-import io.renren.utils.excel.handler.DefaultExcelDataHandler;
 import io.renren.utils.excel.handler.ExcelDataHandler;
 import io.renren.utils.excel.validate.DefaultExcelValidator;
 import io.renren.utils.excel.validate.ExcelValidator;
@@ -28,14 +27,14 @@ public class DefaultImportListener<T extends ExcelRow> extends BaseImportListene
 
     private ExcelDataHandler excelDataHandler;
 
-    public DefaultImportListener() {
+    public DefaultImportListener(ExcelDataHandler excelDataHandler) {
         this.excelValidator = new DefaultExcelValidator();
-        this.excelDataHandler = new DefaultExcelDataHandler();
+        this.excelDataHandler = excelDataHandler;
     }
 
-    public DefaultImportListener(ExcelValidator excelValidator) {
+    public DefaultImportListener(ExcelValidator excelValidator, ExcelDataHandler excelDataHandler) {
         this.excelValidator = excelValidator;
-        this.excelDataHandler = new DefaultExcelDataHandler();
+        this.excelDataHandler = excelDataHandler;
     }
 
     @Override

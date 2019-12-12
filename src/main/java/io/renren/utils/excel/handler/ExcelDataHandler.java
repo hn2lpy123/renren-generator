@@ -19,4 +19,8 @@ public abstract class ExcelDataHandler<T extends ExcelRow> {
     public void onException(Exception ex) throws Exception {
         throw ex;
     }
+
+    public String errorMsg() {
+        return null;
+    }
 }

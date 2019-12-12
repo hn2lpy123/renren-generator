@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @author www.gaozz.club
  * @date 2018-08-26
  */
-@PropertySource(value = { "dataSource.properties" })
+@PropertySource(value = { "classpath:dataSource.properties" })
 public class SystemConfiguration {
 
     @Bean

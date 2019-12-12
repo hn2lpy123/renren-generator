@@ -11,6 +11,7 @@ import io.renren.service.SysGeneratorService;
 import io.renren.utils.annotation.NoRepeatSubmit;
 import io.renren.utils.constant.CommonCodeType;
 import io.renren.utils.excel.ExcelUtils;
+import io.renren.utils.excel.handler.ExcelDataHandler;
 import io.renren.utils.excel.listener.DefaultImportListener;
 import io.renren.utils.generator.GenUtils;
 import io.renren.utils.generator.PageUtils;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -42,6 +44,9 @@ import java.util.Map;
 public class SysGeneratorController {
 	@Autowired
 	private SysGeneratorService sysGeneratorService;
+
+	@Resource(name = "extraFieldDataHandler")
+	private ExcelDataHandler excelDataHandler;
 	
 	/**
 	 * 列表
@@ -193,7 +198,7 @@ public class SysGeneratorController {
 			return new CommonDto(CommonCodeType.EXTRA_FIELD_MAX);
 		}
 		GenUtils.importErrorRows.clear();
-		EasyExcel.read(file.getInputStream(), ExtraField.class, new DefaultImportListener()).sheet().doRead();
-		return new CommonDto(CommonCodeType.SUCCESS);
+		EasyExcel.read(file.getInputStream(), ExtraField.class, new DefaultImportListener(excelDataHandler)).sheet().doRead();
+		return new CommonDto(CommonCodeType.SUCCESS, excelDataHandler.errorMsg());
 	}
 }

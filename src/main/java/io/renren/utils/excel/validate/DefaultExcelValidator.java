@@ -21,6 +21,17 @@ public class DefaultExcelValidator implements ExcelValidator {
 
     private Map<String, Set<Object>> fieldMap = new HashMap<>();
 
+//    private DefaultExcelValidator() {
+//    }
+//
+//    public static DefaultExcelValidator getInstance() {
+//        return ExcelValidatorBuilder.excelValidator;
+//    }
+//
+//    private static class ExcelValidatorBuilder {
+//        private static DefaultExcelValidator excelValidator = new DefaultExcelValidator();
+//    }
+
     @Override
     public boolean validate(ExcelRow r) {
         if (hibernateValidate(r)) {

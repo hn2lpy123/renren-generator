@@ -5,15 +5,24 @@ import io.renren.bean.ExtraField;
 import io.renren.utils.constant.CommonCodeType;
 import io.renren.utils.exception.RRException;
 import io.renren.utils.generator.GenUtils;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component("extraFieldDataHandler")
 public class ExtraFieldDataHandler extends ExcelDataHandler<ExtraField> {
 
     public static final String ERROR_FORMAT = "【RowNum=%s,ValidateMessage=%s】\n";
 
+    private StringBuilder errorMsg = new StringBuilder();
+
     @Override
-    public synchronized void saveData(List<ExtraField> rows) {
+    public String errorMsg() {
+        return errorMsg.toString();
+    }
+
+    @Override
+    public void saveData(List<ExtraField> rows) {
         List<ExtraField> temp = Lists.newArrayList(GenUtils.extraFields);
         for (ExtraField extraField : rows) {
             for (ExtraField field : GenUtils.extraFields) {
@@ -35,7 +44,7 @@ public class ExtraFieldDataHandler extends ExcelDataHandler<ExtraField> {
 
     @Override
     public void dealInvorkErrorRow(List<ExtraField> rows, ExtraField extraField) {
-        String.format(ERROR_FORMAT, extraField.getRowNum(), extraField.getValidateMessage());
+        errorMsg.append(String.format(ERROR_FORMAT, extraField.getRowNum(), extraField.getValidateMessage()));
     }
 
     @Override
