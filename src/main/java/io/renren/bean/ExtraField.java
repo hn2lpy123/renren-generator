@@ -20,17 +20,17 @@ public class ExtraField extends ExcelRow {
 
     @NotBlank(message = "extraFieldType不能为空")
     @ExcelProperty(index = 0, value = "ExtraFieldType")
-    @ColumnWidth(20)
+    @ColumnWidth(25)
     private String extraFieldType;
 
     @NotBlank(message = "extraFieldName不能为空")
     @ExcelProperty(index = 1, value = "ExtraFieldName")
-    @ColumnWidth(25)
+    @ColumnWidth(30)
     private String extraFieldName;
 
     @NotBlank(message = "extraFieldValue不能为空")
     @ExcelProperty(index = 2, value = "ExtraFieldValue")
-    @ColumnWidth(35)
+    @ColumnWidth(40)
     private String extraFieldValue;
 
     public ExtraField() {

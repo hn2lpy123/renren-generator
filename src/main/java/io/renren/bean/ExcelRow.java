@@ -1,5 +1,7 @@
 package io.renren.bean;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
+
 /**
  * Excel导入基础类
  *
@@ -15,16 +17,19 @@ public class ExcelRow extends BaseBean {
     /**
      * 所属行数，从0开始
      */
+    @ExcelIgnore
     private int rowNum = SUCCESS_CODE;
 
     /**
      * 校验码，当承载“行”的对象有设置注解，且校验不通过时，会将结果放置于此字段
      */
+    @ExcelIgnore
     private int validateCode;
 
     /**
      * 校验消息，业务尽量使用校验码做判断
      */
+    @ExcelIgnore
     private String validateMessage;
 
     public int getRowNum() {
