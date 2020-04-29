@@ -40,7 +40,7 @@ public class DefaultImportListener<T extends ExcelRow> extends BaseImportListene
     @Override
     public void invoke(T t, AnalysisContext analysisContext) {
         LOGGER.info("解析到一条数据:{}", t.toString());
-        t.setRowNum(analysisContext.readRowHolder().getRowIndex());
+        t.setRowNum(analysisContext.readRowHolder().getRowIndex() + analysisContext.readSheetHolder().getHeadRowNumber());
         if (excelValidator.validate(t)) {
             t.setValidateCode(ExcelRow.SUCCESS_CODE);
             excelDataHandler.dealInvorkSuccessRow(rows, t);

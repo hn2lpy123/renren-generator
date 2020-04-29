@@ -3,8 +3,6 @@ package io.renren.utils.excel.validate;
 import io.renren.bean.ExcelRow;
 import io.renren.utils.excel.annotation.NotDuplicate;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.groups.Default;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,21 +32,10 @@ public class DefaultExcelValidator implements ExcelValidator {
 
     @Override
     public boolean validate(ExcelRow r) {
-        if (hibernateValidate(r)) {
+        if (HibernateValidator.getInstance().validate(r)) {
             return duplicateValidate(r);
         }
         return false;
-    }
-
-    private boolean hibernateValidate(ExcelRow t) {
-        Set<ConstraintViolation<ExcelRow>> validateSet = HibernateValidator.getValidator().validate(t, Default.class);
-        if (validateSet != null && !validateSet.isEmpty()) {
-            ConstraintViolation<ExcelRow> constraint = validateSet.stream().findAny().orElse(null);
-            t.setValidateCode(ExcelRow.FAILED_CODE);
-            t.setValidateMessage(constraint.getMessage());
-            return false;
-        }
-        return true;
     }
 
     private boolean duplicateValidate(ExcelRow r) {

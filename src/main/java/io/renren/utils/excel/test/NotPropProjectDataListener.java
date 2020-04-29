@@ -3,7 +3,6 @@ package io.renren.utils.excel.test;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.fastjson.JSON;
-import io.renren.utils.excel.listener.NoModleDataListener;
 import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,7 @@ import java.util.Map;
  * @author Jiaju Zhuang
  */
 public class NotPropProjectDataListener extends AnalysisEventListener<Map<Integer, String>> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(NoModleDataListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(NotPropProjectDataListener.class);
     /**
      * 每隔1000条存储数据库，实际使用中可以3000条，然后清理list ，方便内存回收
      */

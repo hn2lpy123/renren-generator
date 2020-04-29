@@ -30,7 +30,7 @@ public class ExtraFieldDataHandler extends ExcelDataHandler<ExtraField> {
                     field.setExtraFieldType(extraField.getExtraFieldType());
                     field.setExtraFieldName(extraField.getExtraFieldName());
                     field.setExtraFieldValue(extraField.getExtraFieldValue());
-                    return;
+                    break;
                 }
             }
             GenUtils.extraFields.add(extraField);

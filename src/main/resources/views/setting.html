@@ -7,6 +7,9 @@
 	<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="plugins/bootstrap-table/bootstrap-table.min.css">
+	<link rel="stylesheet" href="plugins/bootstrap-fileinput/fileinput.min.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
+	<link rel="stylesheet" href="plugins/bootstrap-fileinput/explorer-fas/theme.min.css">
 	<link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/main.css">
 	<!-- Font Awesome -->
@@ -29,6 +32,9 @@
 	<script src="plugins/bootstrap-table/bootstrap-table.min.js"></script>
 	<script src="plugins/bootstrap-table/bootstrap-table-export.min.js"></script>
 	<script src="plugins/bootstrap-table/bootstrap-table-zh-CN.min.js"></script>
+	<script src="plugins/bootstrap-fileinput/fileinput.min.js"></script>
+	<script src="plugins/bootstrap-fileinput/zh.js"></script>
+	<script src="plugins/bootstrap-fileinput/fas/theme.js"></script>
 	<script src="libs/messenger.min.js"></script>
 
 </head>
@@ -187,15 +193,16 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title">上传</h4>
+				<h4 class="modal-title">数据导入</h4>
 			</div>
 			<div class="modal-body">
-				<p>One fine body&hellip;</p>
+				<form enctype="multipart/form-data">
+					<div class="file-loading">
+						<input id="kv-explorer" multiple="false" type="file" class="file-loading" accept=".xlsx">
+					</div>
+				</form>
 			</div>
 			<div class="modal-footer justify-content-between">
-				<button type="button" class="btn btn-success" onclick="downTemplate()">下载模板</button>
-<!--				<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
-				<button type="button" class="btn btn-primary">上传</button>
 			</div>
 		</div>
 		<!-- /.modal-content -->
@@ -207,6 +214,7 @@
 	$._messengerDefaults = { extraClasses: 'messenger-fixed messenger-theme-future messenger-on-top messenger-on-right' }
 	let $table = $('#extraFieldTable');
 	initExtraTable();
+	initFileInput();
 	$(document).ready(function(){
 		$("#save1").hide();
 		$("#save2").hide();
@@ -246,6 +254,45 @@
 			}
 		});
 	});
+	function initFileInput() {
+		$("#kv-explorer").fileinput({
+			'theme': 'fas',
+			'uploadUrl': '/sys/generator/importExtraField',
+			uploadAsync: true,
+			language: 'zh',
+			showPreview: true,
+			maxFileCount: 1,
+			allowedFileExtensions: ['xlsx']
+		});
+		$("#kv-explorer").on("fileuploaded", function (event, data, previewId, index) {
+			if (data.response.code === 1 && data.response.message == null) {
+				$.globalMessenger().post({
+					message: "数据导入成功",
+					type: 'success',//消息类型。error、info、success
+					hideOnNavigate: true
+				});
+				refreshTable();
+			} else if (data.response.code === 1 && data.response.message != null) {
+				$.globalMessenger().post({
+					message: "部分数据导入失败：\n" + data.response.message,
+					type: 'info',//消息类型。error、info、success
+					width: 600,
+					hideAfter: 0,
+					showCloseButton: true,
+					hideOnNavigate: true
+				});
+				refreshTable();
+			} else {
+				$.globalMessenger().post({
+					message: data.response.message,
+					type: 'error',//消息类型。error、info、success
+					hideOnNavigate: true
+				});
+			}
+			$('#importDataModal').modal('hide')
+			$(".fileinput-remove-button").click();
+		});
+	}
 	function downTemplate() {
 		window.location.href = "/sys/"
 	}

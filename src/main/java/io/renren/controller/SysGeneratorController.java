@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -193,12 +194,19 @@ public class SysGeneratorController {
 	 */
 	@PostMapping("/importExtraField")
 	@ResponseBody
-	public CommonDto importExtraField(MultipartFile file) throws IOException {
+	public CommonDto importExtraField(HttpServletRequest request) throws IOException {
 		if (GenUtils.extraFields.size() > GenUtils.EXTRA_FIELD_MAX) {
 			return new CommonDto(CommonCodeType.EXTRA_FIELD_MAX);
 		}
+		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+		MultipartFile multipartFile = null;
+		Map map =multipartRequest.getFileMap();
+		for (Iterator i = map.keySet().iterator(); i.hasNext();) {
+			Object obj = i.next();
+			multipartFile=(MultipartFile) map.get(obj);
+		}
 		GenUtils.importErrorRows.clear();
-		EasyExcel.read(file.getInputStream(), ExtraField.class, new DefaultImportListener(excelDataHandler)).sheet().doRead();
+		EasyExcel.read(multipartFile.getInputStream(), ExtraField.class, new DefaultImportListener(excelDataHandler)).sheet().headRowNumber(1).doRead();
 		return new CommonDto(CommonCodeType.SUCCESS, excelDataHandler.errorMsg());
 	}
 }

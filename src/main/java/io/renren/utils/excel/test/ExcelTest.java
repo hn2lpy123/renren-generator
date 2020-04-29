@@ -1,10 +1,13 @@
 package io.renren.utils.excel.test;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.event.AnalysisEventListener;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ExcelTest {
@@ -16,6 +19,10 @@ public class ExcelTest {
     public static final String PROJECT_SQL_FORMAT = "INSERT INTO t_market_property_project(property_company_id, property_project_name)\n" +
             "SELECT id property_company_id, %s property_project_name FROM t_market_integrating_mkt_company\n" +
             "WHERE company_name=%s AND `status`=1;\n";
+
+    public static final String ADD_PROJECT_SQL_FORMAT2 = "INSERT INTO t_market_property_project(property_company_id, property_project_name)\n" +
+            "SELECT id property_company_id, %s property_project_name FROM t_market_integrating_mkt_company\n" +
+            "WHERE company_name=%s AND `status`=1 AND NOT EXISTS (SELECT * FROM t_market_property_project WHERE property_project_name=%s AND `status`=1);\n";
 
     public static final String  UPDATE_PROJECT_SQL_FORMAT = "UPDATE t_market_property_project SET property_unit_id=(\n" +
             "SELECT id FROM t_market_integrating_mkt_unit WHERE `status`=1 AND unit_name=%s AND\n" +
@@ -31,14 +38,25 @@ public class ExcelTest {
     public static Map<String, List<String>> companyProjectRel = new HashMap<>();
 
     public static void main(String[] args) throws IOException {
-        String fileName ="D:\\test.xlsx";
-        System.out.println("====start====");
+//        String fileName ="D:\\add_project.xlsx";
+//
+//        readExcel(fileName, new AddProjectDataListener());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            System.out.println(sdf.parse("2020-01-09 23:59:59").compareTo(new Date()) > 0);
+        } catch (ParseException e) {
+            System.out.println("error");
+        }
+    }
+
+    private static void readExcel(String fileName, AnalysisEventListener listener) throws IOException {
+        System.out.println("====start read " + fileName + "====");
         companyInfoSet.clear();
         companyProjectRel.clear();
 //        EasyExcel.read(fileName, new NotPropProjectDataListener()).sheet("地产公司").doRead();
 //        EasyExcel.read(fileName, new NotPropProjectDataListener()).sheet("其他产业集团").doRead();
-        EasyExcel.read(fileName, new PropProjectDataListener()).sheet("物业公司").doRead();
-        saveCompanyProjectRel(companyProjectRel);
+        EasyExcel.read(fileName, listener).sheet("物业公司").doRead();
+//        saveCompanyProjectRel(companyProjectRel);
 //        saveCompanyInfo(companyInfoSet);
         System.out.println("====end====");
     }

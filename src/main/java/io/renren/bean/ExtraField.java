@@ -6,8 +6,10 @@ import com.alibaba.excel.annotation.write.style.ColumnWidth;
 import com.alibaba.excel.annotation.write.style.ContentRowHeight;
 import com.alibaba.excel.annotation.write.style.HeadRowHeight;
 import io.renren.utils.constant.ExtraFieldType;
+import io.renren.utils.excel.annotation.NotDuplicate;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Pattern;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,6 +21,7 @@ public class ExtraField extends ExcelRow {
     public static final String CLASS_SUFFIX = "ClassName";
 
     @NotBlank(message = "extraFieldType不能为空")
+    @Pattern(regexp = "string|class", message = "extraFieldType可选值只能为string或class")
     @ExcelProperty(index = 0, value = "ExtraFieldType")
     @ColumnWidth(25)
     private String extraFieldType;
@@ -26,6 +29,7 @@ public class ExtraField extends ExcelRow {
     @NotBlank(message = "extraFieldName不能为空")
     @ExcelProperty(index = 1, value = "ExtraFieldName")
     @ColumnWidth(30)
+    @NotDuplicate(message = "extraFieldName不能重复")
     private String extraFieldName;
 
     @NotBlank(message = "extraFieldValue不能为空")
